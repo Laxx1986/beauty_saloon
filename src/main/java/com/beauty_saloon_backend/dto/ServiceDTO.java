@@ -1,10 +1,9 @@
-package dto;
+package com.beauty_saloon_backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import model.ServiceLength;
 
 @Builder
 @AllArgsConstructor

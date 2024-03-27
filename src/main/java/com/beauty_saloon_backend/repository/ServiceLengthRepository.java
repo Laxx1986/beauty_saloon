@@ -1,11 +1,8 @@
-package repository;
+package com.beauty_saloon_backend.repository;
 
 import jakarta.transaction.Transactional;
-import model.ServiceLength;
-import model.ServiceProvider;
-import model.User;
+import com.beauty_saloon_backend.model.ServiceLength;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 @Transactional
 @Repository

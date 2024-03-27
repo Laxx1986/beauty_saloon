@@ -1,4 +1,4 @@
-package model;
+package com.beauty_saloon_backend.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
@@ -20,13 +20,13 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "service_provider_id",
+            name = "connect_provider_to_user",
             joinColumns = @JoinColumn(name = "serviceProviderId"),
-            inverseJoinColumns = @JoinColumn(name = "serviceProviderId")
+            inverseJoinColumns = @JoinColumn(name = "serviceProviderIdInverse")
     )
     private Set<ServiceProvider> serviceProvider;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "userName", nullable = false)
     private String userName;
 
     @Column(name = "email", nullable = false)
