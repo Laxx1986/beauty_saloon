@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Setter
-@Builder
 @Getter
+@Builder
 @AllArgsConstructor
 public class UserDTO {
     private long userId;
     private String userName;
     private String email;
-
     private String phoneNumber;
-    private String password;
 }

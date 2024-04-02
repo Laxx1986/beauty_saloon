@@ -19,7 +19,7 @@ public class OpeningTime {
     private long openingTimeId;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private Timestamp date;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="time_from", nullable = false)

@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 public class OpeningTimeDTO {
     private long openingTimeId;
-    private Date date;
+    private Timestamp date;
     private Timestamp timeFrom;
     private Timestamp timeTo;
 }
