@@ -28,4 +28,7 @@ public class OpeningTime {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="time_to", nullable = false)
     private Timestamp timeTo;
+
+    @OneToOne(mappedBy = "openingTime", fetch = FetchType.LAZY)
+    private Booking booking;
 }

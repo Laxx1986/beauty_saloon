@@ -3,6 +3,10 @@ package com.beauty_saloon_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -19,10 +23,10 @@ public class Service {
     @Column(name="service_name", nullable = false)
     private String serviceName;
 
-    @ManyToOne
-    @JoinColumn(name="serviceLengthId")
-    private ServiceLength serviceLength;
+    @Column(name="service_length", nullable = false)
+    private Timestamp serviceLength;
 
     @Column(name = "service_price", nullable = false)
     private int servicePrice;
+
 }

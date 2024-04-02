@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Builder
 @AllArgsConstructor
 @Getter
@@ -12,6 +14,6 @@ import lombok.Setter;
 public class ServiceDTO {
     private long serviceId;
     private String serviceName;
-    private int serviceLength;
+    private Timestamp serviceLength;
     private int servicePrice;
 }

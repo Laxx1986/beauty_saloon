@@ -29,6 +29,9 @@ public class User {
     @Column(name = "userName", nullable = false)
     private String userName;
 
+    @Column(name = "Name", nullable = false)
+    private String name;
+
     @Column(name = "email", nullable = false)
     private String email;
 
