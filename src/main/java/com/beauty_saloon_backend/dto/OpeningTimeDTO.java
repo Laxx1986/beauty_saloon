@@ -1,9 +1,6 @@
 package com.beauty_saloon_backend.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -12,6 +9,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 public class OpeningTimeDTO {
     private long openingTimeId;
     private Timestamp date;

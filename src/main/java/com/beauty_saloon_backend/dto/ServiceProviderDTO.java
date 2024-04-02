@@ -1,13 +1,11 @@
 package com.beauty_saloon_backend.dto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Builder
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ServiceProviderDTO {
     private long serviceProviderId;
     private String serviceProviderName;
