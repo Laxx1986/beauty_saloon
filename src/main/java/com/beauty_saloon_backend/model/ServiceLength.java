@@ -14,23 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table
-public class Service {
+public class ServiceLength {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="service_id", nullable = false)
-    private long serviceId;
-
-    @Column(name="service_name", nullable = false)
-    private String serviceName;
+    @Column(name="service_length_id", nullable = false)
+    private long serviceLengthId;
 
     @Column(name="service_length", nullable = false)
     private Timestamp serviceLength;
 
-    @Column(name = "service_price", nullable = false)
-    private int servicePrice;
-
     @ManyToOne
-    @JoinColumn(name = "service_length_id")
-    private ServiceLength length;
+    @JoinColumn(name = "service_id")
+    private Service serviceId;
+
 
 }
