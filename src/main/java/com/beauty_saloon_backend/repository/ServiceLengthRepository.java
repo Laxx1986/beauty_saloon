@@ -4,6 +4,7 @@ import com.beauty_saloon_backend.model.ServiceLength;
 import jakarta.transaction.Transactional;
 import com.beauty_saloon_backend.model.OpeningTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 @Transactional
 @Repository

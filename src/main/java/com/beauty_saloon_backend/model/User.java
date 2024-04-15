@@ -18,13 +18,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "connect_provider_to_user",
-            joinColumns = @JoinColumn(name = "serviceProviderId"),
-            inverseJoinColumns = @JoinColumn(name = "serviceProviderIdInverse")
-    )
-    private Set<ServiceProvider> serviceProvider;
 
     @Column(name = "userName", nullable = false)
     private String userName;

@@ -11,6 +11,7 @@ public class ServiceProviderConverter {
         ServiceProviderDTO serviceProviderDTO = new ServiceProviderDTO();
         serviceProviderDTO.setServiceProviderId(serviceProvider.getServiceProviderId());
         serviceProviderDTO.setServiceProviderName(serviceProvider.getServiceProviderName());
+        serviceProviderDTO.setServices(serviceProvider.getServices());
         return serviceProviderDTO;
     }
 
@@ -18,6 +19,7 @@ public class ServiceProviderConverter {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setServiceProviderId(dto.getServiceProviderId());
         serviceProvider.setServiceProviderName(dto.getServiceProviderName());
+        serviceProvider.setServices(dto.getServices());
         return serviceProvider;
     }
 }

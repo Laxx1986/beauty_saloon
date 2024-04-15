@@ -1,5 +1,7 @@
 package com.beauty_saloon_backend.dto;
 
+import com.beauty_saloon_backend.model.ServiceLength;
+import com.beauty_saloon_backend.model.ServiceProvider;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -12,6 +14,7 @@ import java.sql.Timestamp;
 public class ServiceDTO {
     private long serviceId;
     private String serviceName;
-    private Timestamp serviceLength;
+    private ServiceLength length;
     private int servicePrice;
+    private ServiceProvider serviceProviderId;
 }

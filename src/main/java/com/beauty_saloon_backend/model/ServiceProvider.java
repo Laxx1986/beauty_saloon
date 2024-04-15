@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -20,5 +22,8 @@ public class ServiceProvider {
     @Column(name="service_provider_name", nullable = false)
     @Size(max = 50)
     private String serviceProviderName;
+
+    @OneToMany(mappedBy = "serviceProviderId", fetch = FetchType.LAZY)
+    private List<Service> services;
 
 }

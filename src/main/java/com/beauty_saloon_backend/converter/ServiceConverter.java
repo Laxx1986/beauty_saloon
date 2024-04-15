@@ -10,8 +10,9 @@ public class ServiceConverter {
         ServiceDTO serviceDTO = new ServiceDTO();
         serviceDTO.setServiceId(service.getServiceId());
         serviceDTO.setServiceName(service.getServiceName());
-        serviceDTO.setServiceLength(service.getServiceLength());
+        serviceDTO.setLength(service.getLength());
         serviceDTO.setServicePrice(service.getServicePrice());
+        serviceDTO.setServiceProviderId(service.getServiceProviderId());
         return serviceDTO;
     }
 
@@ -19,8 +20,9 @@ public class ServiceConverter {
         Service service = new Service();
         service.setServiceId(dto.getServiceId());
         service.setServiceName(dto.getServiceName());
-        service.setServiceLength(dto.getServiceLength());
+        service.setLength(dto.getLength());
         service.setServicePrice(dto.getServicePrice());
+        service.setServiceProviderId(dto.getServiceProviderId());
         return service;
     }
 }

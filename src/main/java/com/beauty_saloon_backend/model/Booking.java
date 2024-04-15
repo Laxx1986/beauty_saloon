@@ -29,6 +29,14 @@ public class Booking {
     )
     private Set<User> users;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "connect_booking_to_service_provider",
+            joinColumns = @JoinColumn(name = "serviceProviderId"),
+            inverseJoinColumns = @JoinColumn(name = "serviceProviderIdInverse")
+    )
+    private Set<ServiceProvider> serviceProvider;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "service_id")
     private Service service;

@@ -10,6 +10,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ServiceLengthDTO {
     private long serviceLengthId;
-    private Timestamp serviceLength;
+    private int serviceLength;
 }
 

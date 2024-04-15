@@ -21,11 +21,8 @@ public class ServiceLength {
     private long serviceLengthId;
 
     @Column(name="service_length", nullable = false)
-    private Timestamp serviceLength;
+    private int serviceLength;
 
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private Service serviceId;
 
 
 }
