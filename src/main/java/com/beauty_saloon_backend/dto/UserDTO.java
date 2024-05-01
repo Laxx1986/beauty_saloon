@@ -1,4 +1,5 @@
 package com.beauty_saloon_backend.dto;
+import com.beauty_saloon_backend.model.ServiceProvider;
 import lombok.*;
 
 @Setter
@@ -11,4 +12,5 @@ public class UserDTO {
     private String userName;
     private String email;
     private String phoneNumber;
+
 }

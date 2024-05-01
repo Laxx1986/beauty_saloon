@@ -1,8 +1,6 @@
 package com.beauty_saloon_backend.converter;
 
-import com.beauty_saloon_backend.dto.ServiceDTO;
 import com.beauty_saloon_backend.dto.ServiceLengthDTO;
-import com.beauty_saloon_backend.model.Service;
 import com.beauty_saloon_backend.model.ServiceLength;
 import org.springframework.stereotype.Component;
 

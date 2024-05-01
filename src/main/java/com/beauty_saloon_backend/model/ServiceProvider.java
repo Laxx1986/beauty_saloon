@@ -24,6 +24,10 @@ public class ServiceProvider {
     private String serviceProviderName;
 
     @OneToMany(mappedBy = "serviceProviderId", fetch = FetchType.LAZY)
-    private List<Service> services;
+    private List<SaloonService> saloonServices;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User User;
 
 }

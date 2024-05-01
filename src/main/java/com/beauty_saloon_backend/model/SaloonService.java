@@ -3,10 +3,6 @@ package com.beauty_saloon_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @Builder
@@ -14,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table
-public class Service {
+public class SaloonService {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="service_id", nullable = false)

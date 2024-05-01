@@ -2,6 +2,8 @@ package com.beauty_saloon_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 @Data
@@ -21,14 +23,18 @@ public class OpeningTime {
     @Column(name = "date", nullable = false)
     private Timestamp date;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     @Column(name="time_from", nullable = false)
-    private Timestamp timeFrom;
+    private Time timeFrom;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIME)
     @Column(name="time_to", nullable = false)
-    private Timestamp timeTo;
+    private Time timeTo;
 
     @OneToOne(mappedBy = "openingTime", fetch = FetchType.LAZY)
     private Booking booking;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "service_provider_id")
+    private ServiceProvider serviceProvider;
 }

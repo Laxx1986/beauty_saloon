@@ -1,28 +1,28 @@
 package com.beauty_saloon_backend.converter;
 
 import com.beauty_saloon_backend.dto.ServiceDTO;
-import com.beauty_saloon_backend.model.Service;
+import com.beauty_saloon_backend.model.SaloonService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServiceConverter {
-    public ServiceDTO toDto (Service service) {
+    public ServiceDTO toDto (SaloonService saloonService) {
         ServiceDTO serviceDTO = new ServiceDTO();
-        serviceDTO.setServiceId(service.getServiceId());
-        serviceDTO.setServiceName(service.getServiceName());
-        serviceDTO.setLength(service.getLength());
-        serviceDTO.setServicePrice(service.getServicePrice());
-        serviceDTO.setServiceProviderId(service.getServiceProviderId());
+        serviceDTO.setServiceId(saloonService.getServiceId());
+        serviceDTO.setServiceName(saloonService.getServiceName());
+        serviceDTO.setLength(saloonService.getLength());
+        serviceDTO.setServicePrice(saloonService.getServicePrice());
+        serviceDTO.setServiceProviderId(saloonService.getServiceProviderId());
         return serviceDTO;
     }
 
-    public Service toEntity (ServiceDTO dto) {
-        Service service = new Service();
-        service.setServiceId(dto.getServiceId());
-        service.setServiceName(dto.getServiceName());
-        service.setLength(dto.getLength());
-        service.setServicePrice(dto.getServicePrice());
-        service.setServiceProviderId(dto.getServiceProviderId());
-        return service;
+    public SaloonService toEntity (ServiceDTO dto) {
+        SaloonService saloonService = new SaloonService();
+        saloonService.setServiceId(dto.getServiceId());
+        saloonService.setServiceName(dto.getServiceName());
+        saloonService.setLength(dto.getLength());
+        saloonService.setServicePrice(dto.getServicePrice());
+        saloonService.setServiceProviderId(dto.getServiceProviderId());
+        return saloonService;
     }
 }

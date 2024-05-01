@@ -32,4 +32,8 @@ public class User {
     private String phoneNumber;
     @Column(name="password", nullable = false)
     private String password;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_rights_id")
+    private UserRights userRights;
 }

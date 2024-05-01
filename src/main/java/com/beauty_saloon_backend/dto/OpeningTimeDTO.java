@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.dto;
 
+import com.beauty_saloon_backend.model.ServiceProvider;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -15,4 +16,6 @@ public class OpeningTimeDTO {
     private Timestamp date;
     private Timestamp timeFrom;
     private Timestamp timeTo;
+    private ServiceProvider serviceProvider;
+
 }
