@@ -3,6 +3,7 @@ package com.beauty_saloon_backend.dto;
 import com.beauty_saloon_backend.model.ServiceProvider;
 import lombok.*;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -14,8 +15,8 @@ import java.util.Date;
 public class OpeningTimeDTO {
     private long openingTimeId;
     private Timestamp date;
-    private Timestamp timeFrom;
-    private Timestamp timeTo;
+    private Time timeFrom;
+    private Time timeTo;
     private ServiceProvider serviceProvider;
 
 }
