@@ -12,6 +12,7 @@ public class ServiceProviderConverter {
         serviceProviderDTO.setServiceProviderId(serviceProvider.getServiceProviderId());
         serviceProviderDTO.setServiceProviderName(serviceProvider.getServiceProviderName());
         serviceProviderDTO.setSaloonServices(serviceProvider.getSaloonServices());
+        serviceProviderDTO.setUser(serviceProvider.getUser());
         return serviceProviderDTO;
     }
 
@@ -20,6 +21,7 @@ public class ServiceProviderConverter {
         serviceProvider.setServiceProviderId(dto.getServiceProviderId());
         serviceProvider.setServiceProviderName(dto.getServiceProviderName());
         serviceProvider.setSaloonServices(dto.getSaloonServices());
+        serviceProvider.setUser(dto.getUser());
         return serviceProvider;
     }
 }

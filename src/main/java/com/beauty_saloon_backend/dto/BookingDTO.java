@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.dto;
 
+import com.beauty_saloon_backend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class BookingDTO {
     private long bookingId;
-    private Set<Long> userIds;
+    private User user;
     private Long serviceId;
     private Long openingTimeId;
     private Date date;

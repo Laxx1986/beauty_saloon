@@ -21,13 +21,10 @@ public class Booking {
     @Column(name="booking_id", nullable = false)
     private long bookingId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "connect_booking_to_user",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "userIdInverse")
-    )
-    private Set<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

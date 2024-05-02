@@ -16,7 +16,7 @@ public class BookingConverter {
     public BookingDTO toDto(Booking booking) {
         BookingDTO dto = new BookingDTO();
         dto.setBookingId(booking.getBookingId());
-        dto.setUserIds(booking.getUsers().stream().map(User::getUserId).collect(Collectors.toSet()));
+        dto.setUser(booking.getUser());
         dto.setServiceId(booking.getSaloonService().getServiceId());
         dto.setOpeningTimeId(booking.getOpeningTime().getOpeningTimeId());
         dto.setDate(booking.getDate());
@@ -28,7 +28,7 @@ public class BookingConverter {
     public Booking toEntity(BookingDTO bookingDTO, SaloonService saloonService, OpeningTime openingTime) {
         Booking booking = new Booking();
         booking.setBookingId(bookingDTO.getBookingId());
-        booking.setUsers(new HashSet<>());
+        booking.setUser(bookingDTO.getUser());
         booking.setSaloonService(saloonService);
         booking.setOpeningTime(openingTime);
         booking.setDate(bookingDTO.getDate());
