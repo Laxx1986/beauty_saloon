@@ -31,10 +31,9 @@ public class OpeningTime {
     @Column(name="time_to", nullable = false)
     private Time timeTo;
 
-    @OneToOne(mappedBy = "openingTime", fetch = FetchType.LAZY)
-    private Booking booking;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_provider_id")
     private ServiceProvider serviceProvider;
 }

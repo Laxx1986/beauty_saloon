@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
@@ -16,10 +17,10 @@ import java.util.Set;
 @AllArgsConstructor
 public class BookingDTO {
     private long bookingId;
-    private User user;
+    private Long userId;
     private Long serviceId;
     private Long openingTimeId;
     private Date date;
-    private Timestamp time;
+    private Time time;
     private String comment;
 }

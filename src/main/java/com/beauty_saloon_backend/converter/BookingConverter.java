@@ -1,3 +1,4 @@
+
 package com.beauty_saloon_backend.converter;
 
 import org.springframework.stereotype.Component;
@@ -5,10 +6,6 @@ import com.beauty_saloon_backend.dto.BookingDTO;
 import com.beauty_saloon_backend.model.Booking;
 import com.beauty_saloon_backend.model.OpeningTime;
 import com.beauty_saloon_backend.model.SaloonService;
-import com.beauty_saloon_backend.model.User;
-
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -16,7 +13,7 @@ public class BookingConverter {
     public BookingDTO toDto(Booking booking) {
         BookingDTO dto = new BookingDTO();
         dto.setBookingId(booking.getBookingId());
-        dto.setUser(booking.getUser());
+        dto.setUserId(booking.getUser().getUserId());
         dto.setServiceId(booking.getSaloonService().getServiceId());
         dto.setOpeningTimeId(booking.getOpeningTime().getOpeningTimeId());
         dto.setDate(booking.getDate());
@@ -28,7 +25,6 @@ public class BookingConverter {
     public Booking toEntity(BookingDTO bookingDTO, SaloonService saloonService, OpeningTime openingTime) {
         Booking booking = new Booking();
         booking.setBookingId(bookingDTO.getBookingId());
-        booking.setUser(bookingDTO.getUser());
         booking.setSaloonService(saloonService);
         booking.setOpeningTime(openingTime);
         booking.setDate(bookingDTO.getDate());

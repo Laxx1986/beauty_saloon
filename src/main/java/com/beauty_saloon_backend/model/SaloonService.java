@@ -22,12 +22,12 @@ public class SaloonService {
     @Column(name = "service_price", nullable = false)
     private int servicePrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_length_id")
-    private ServiceLength length;
+    private ServiceLength serviceLength;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_provider_id")
-    private ServiceProvider serviceProviderId;
+    private ServiceProvider serviceProvider;
 
 }

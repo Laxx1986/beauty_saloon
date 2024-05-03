@@ -1,6 +1,7 @@
 package com.beauty_saloon_backend.converter;
 
 import com.beauty_saloon_backend.dto.ServiceProviderDTO;
+import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.model.ServiceProvider;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +12,14 @@ public class ServiceProviderConverter {
         ServiceProviderDTO serviceProviderDTO = new ServiceProviderDTO();
         serviceProviderDTO.setServiceProviderId(serviceProvider.getServiceProviderId());
         serviceProviderDTO.setServiceProviderName(serviceProvider.getServiceProviderName());
-        serviceProviderDTO.setSaloonServices(serviceProvider.getSaloonServices());
-        serviceProviderDTO.setUser(serviceProvider.getUser());
+        serviceProviderDTO.setUserId(serviceProvider.getUser().getUserId());
         return serviceProviderDTO;
     }
 
-    public ServiceProvider toEntity (ServiceProviderDTO dto) {
+    public ServiceProvider toEntity(ServiceProviderDTO dto) {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setServiceProviderId(dto.getServiceProviderId());
         serviceProvider.setServiceProviderName(dto.getServiceProviderName());
-        serviceProvider.setSaloonServices(dto.getSaloonServices());
-        serviceProvider.setUser(dto.getUser());
         return serviceProvider;
     }
 }

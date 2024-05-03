@@ -1,11 +1,10 @@
+// User.java
 package com.beauty_saloon_backend.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
-import jakarta.persistence.*;
 
 @Getter
 @Setter
@@ -38,9 +37,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_rights_id")
     private UserRights userRights;
 }
-
-

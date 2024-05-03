@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class ServiceDTO {
     private long serviceId;
     private String serviceName;
-    private ServiceLength length;
+    private Long serviceLengthId;
     private int servicePrice;
-    private ServiceProvider serviceProviderId;
+    private Long serviceProviderId;
 }

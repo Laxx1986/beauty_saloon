@@ -23,10 +23,10 @@ public class ServiceProvider {
     @Size(max = 50)
     private String serviceProviderName;
 
-    @OneToMany(mappedBy = "serviceProviderId", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "serviceId", fetch = FetchType.EAGER)
     private List<SaloonService> saloonServices;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User User;
 

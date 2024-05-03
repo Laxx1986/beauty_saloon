@@ -12,7 +12,7 @@ public class OpeningTimeConverter {
         openingTimeDTO.setDate(openingTime.getDate());
         openingTimeDTO.setTimeFrom(openingTime.getTimeFrom());
         openingTimeDTO.setTimeTo(openingTime.getTimeTo());
-        openingTimeDTO.setServiceProvider(openingTime.getServiceProvider());
+        openingTimeDTO.setServiceProviderId(openingTime.getServiceProvider().getServiceProviderId());
         return openingTimeDTO;
     }
 
@@ -22,7 +22,6 @@ public class OpeningTimeConverter {
         openingTime.setDate(openingTimeDTO.getDate());
         openingTime.setTimeFrom(openingTimeDTO.getTimeFrom());
         openingTime.setTimeTo(openingTimeDTO.getTimeTo());
-        openingTime.setServiceProvider((openingTimeDTO.getServiceProvider()));
         return openingTime;
     }
 }

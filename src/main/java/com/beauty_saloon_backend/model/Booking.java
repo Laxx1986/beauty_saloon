@@ -3,6 +3,7 @@ package com.beauty_saloon_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
@@ -21,12 +22,12 @@ public class Booking {
     @Column(name="booking_id", nullable = false)
     private long bookingId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "connect_booking_to_service_provider",
             joinColumns = @JoinColumn(name = "serviceProviderId"),
@@ -34,11 +35,11 @@ public class Booking {
     )
     private Set<ServiceProvider> serviceProvider;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
     private SaloonService saloonService;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "opening_time_id")
     private OpeningTime openingTime;
 
@@ -46,7 +47,7 @@ public class Booking {
     private Date date;
 
     @Column(name = "booking_time")
-    private Timestamp time;
+    private Time time;
 
     @Column(name = "comment")
     private String comment;

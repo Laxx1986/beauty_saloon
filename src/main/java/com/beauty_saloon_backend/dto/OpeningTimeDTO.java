@@ -17,6 +17,6 @@ public class OpeningTimeDTO {
     private Timestamp date;
     private Time timeFrom;
     private Time timeTo;
-    private ServiceProvider serviceProvider;
+    private Long serviceProviderId;
 
 }

@@ -1,3 +1,4 @@
+// BookingService.java
 package com.beauty_saloon_backend.service;
 
 import com.beauty_saloon_backend.controller.BookingController;
@@ -8,8 +9,6 @@ import com.beauty_saloon_backend.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,10 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
     }
 
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    public List<BookingDTO> getAllBookings() {
+        List<Booking> bookings = bookingRepository.findAll();
+        return bookings.stream()
+                .map(bookingConverter::toDto)
+                .collect(Collectors.toList());
     }
 }
