@@ -30,4 +30,8 @@ public class BookingService {
                 .map(bookingConverter::toDto)
                 .collect(Collectors.toList());
     }
+
+    public List<Object[]> findAllBooking() {
+        return bookingRepository.findAllBooking();
+    }
 }

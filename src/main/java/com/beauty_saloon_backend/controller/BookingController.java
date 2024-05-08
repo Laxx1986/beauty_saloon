@@ -25,8 +25,8 @@ public class BookingController {
     }
 
     @GetMapping("/all-booking")
-    public ResponseEntity<List<BookingDTO>> getAllBookings() {
-        List<BookingDTO> bookingDTOs = bookingService.getAllBookings();
+    public ResponseEntity<List<Object[]>> findAllBooking() {
+        List<Object[]> bookingDTOs = bookingService.findAllBooking();
         return ResponseEntity.ok(bookingDTOs);
     }
 }

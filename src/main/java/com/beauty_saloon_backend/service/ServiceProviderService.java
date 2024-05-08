@@ -28,4 +28,8 @@ public class ServiceProviderService {
                 .map(serviceProviderConverter::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<Object[]> findServiceProviderAndUserDetails() {
+        return serviceProviderRepository.findServiceProviderAndUserDetails();
+    }
 }

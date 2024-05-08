@@ -9,6 +9,7 @@ import com.beauty_saloon_backend.repository.ServiceRepository;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,5 +28,9 @@ public class SaloonServiceService {
         return services.stream()
                 .map(serviceConverter::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<Object[]> findServiceDetails() {
+        return serviceRepository.findServiceDetails();
     }
 }

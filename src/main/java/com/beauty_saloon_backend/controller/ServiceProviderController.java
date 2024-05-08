@@ -1,7 +1,5 @@
 package com.beauty_saloon_backend.controller;
 
-import com.beauty_saloon_backend.dto.BookingDTO;
-import com.beauty_saloon_backend.dto.ServiceProviderDTO;
 import com.beauty_saloon_backend.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +21,8 @@ public class ServiceProviderController {
     }
 
     @GetMapping("/all-serviceprovider")
-    public ResponseEntity<List<ServiceProviderDTO>> getAllServiceProvider() {
-        List<ServiceProviderDTO> serviceProviderDTOS = serviceProviderService.getAllServiceProvider();
+    public ResponseEntity<List<Object[]>> findServiceProviderAndUserDetails() {
+        List<Object[]> serviceProviderDTOS = serviceProviderService.findServiceProviderAndUserDetails();
         return ResponseEntity.ok(serviceProviderDTOS);
     }
 }
