@@ -40,4 +40,6 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_rights_id")
     private UserRights userRights;
+
+    private boolean loggedIn;
 }

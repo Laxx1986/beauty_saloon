@@ -20,4 +20,6 @@ public class UserDTO {
     private List<Long> bookingIds;
     private String password;
     private UserRights userRights;
+
+    private boolean loggedIn;
 }

@@ -13,9 +13,19 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    @Query("SELECT b.bookingId, b.user.userName, b.saloonService.serviceName, b.date, b.time,   b.comment " +
-            "FROM Booking b")
+    @Query("SELECT b.bookingId, b.date, b.time, b.comment, " +
+            "u.userName, " +
+            "sp.serviceProviderName, " +
+            "ss.serviceName, " +
+            "sl.serviceLength " +
+            "FROM Booking b " +
+            "JOIN b.user u " +
+            "JOIN b.saloonService ss " +
+            "JOIN ss.serviceLength sl " +
+            "JOIN ss.serviceProvider sp " +
+            "JOIN b.openingTime ot")
     List<Object[]> findAllBooking();
+
 
 
 

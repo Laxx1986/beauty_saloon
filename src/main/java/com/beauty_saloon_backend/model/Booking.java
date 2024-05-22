@@ -39,7 +39,7 @@ public class Booking {
     @JoinColumn(name = "service_id")
     private SaloonService saloonService;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "opening_time_id")
     private OpeningTime openingTime;
 

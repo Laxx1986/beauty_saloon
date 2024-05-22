@@ -20,6 +20,7 @@ public class UserConverter {
                 .password(user.getPassword())
                 .userRights(user.getUserRights())
                 .bookingIds(user.getBookings().stream().map(Booking::getBookingId).collect(Collectors.toList()))
+                .loggedIn(user.isLoggedIn())
                 .build();
     }
 
@@ -31,6 +32,7 @@ public class UserConverter {
                 .phoneNumber(dto.getPhoneNumber())
                 .password(dto.getPassword())
                 .userRights(dto.getUserRights())
+                .loggedIn(dto.isLoggedIn())
                 .build();
     }
 }
