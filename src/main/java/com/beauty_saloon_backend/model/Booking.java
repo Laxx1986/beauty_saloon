@@ -52,4 +52,7 @@ public class Booking {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name ="confirmed")
+    private boolean confirmed;
+
 }

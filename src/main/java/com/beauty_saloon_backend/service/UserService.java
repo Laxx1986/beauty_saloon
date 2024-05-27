@@ -34,4 +34,30 @@ public class UserService {
         User user = userConverter.toEntity(userDTO);
         return userRepository.save(user);
     }
+
+    // UserService.java
+    public UserDTO loginUser(UserDTO userDTO) {
+        User user = userRepository.findByUserName(userDTO.getUserName());
+        if (user != null && user.getPassword().equals(userDTO.getPassword())) {
+            user.setLoggedIn(true);
+            userRepository.save(user);
+            return UserDTO.builder()
+                    .userName(user.getUserName())
+                    .userRights(user.getUserRights())
+                    .build();
+        } else {
+            throw new RuntimeException("Invalid credentials");
+        }
+    }
+
+    public void logoutUser(String userName) {
+        User user = userRepository.findByUserName(userName);
+        if (user != null) {
+            user.setLoggedIn(false);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
 }

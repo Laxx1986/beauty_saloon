@@ -23,4 +23,5 @@ public class BookingDTO {
     private Date date;
     private Time time;
     private String comment;
+    private boolean confirmed;
 }
