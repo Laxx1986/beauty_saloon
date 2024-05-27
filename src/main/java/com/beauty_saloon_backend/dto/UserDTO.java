@@ -15,6 +15,8 @@ import java.util.List;
 public class UserDTO {
     private long userId;
     private String userName;
+
+    private String name;
     private String email;
     private String phoneNumber;
     private List<Long> bookingIds;

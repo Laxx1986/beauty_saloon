@@ -1,36 +1,40 @@
 package com.beauty_saloon_backend.service;
+
 import com.beauty_saloon_backend.model.SaloonService;
+import com.beauty_saloon_backend.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.beauty_saloon_backend.converter.ServiceConverter;
-import com.beauty_saloon_backend.dto.ServiceDTO;
-import com.beauty_saloon_backend.repository.ServiceRepository;
-
-
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class SaloonServiceService {
 
     private final ServiceRepository serviceRepository;
-    private final ServiceConverter serviceConverter;
+
     @Autowired
-    public SaloonServiceService (ServiceRepository serviceRepository, ServiceConverter serviceConverter) {
-        this.serviceConverter = serviceConverter;
+    public SaloonServiceService(ServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
 
-    public List<ServiceDTO> getAllServices() {
-        List<SaloonService> services = serviceRepository.findAll();
-        return services.stream()
-                .map(serviceConverter::toDto)
+    public List<Object> getAllServiceDetails() {
+        return serviceRepository.findAll()
+                .stream()
+                .map(this::createServiceDetailsObject)
                 .collect(Collectors.toList());
     }
 
-    public List<Object[]> findServiceDetails() {
-        return serviceRepository.findServiceDetails();
+    private Object createServiceDetailsObject(SaloonService saloonService) {
+        Map<String, Object> serviceDetails = new HashMap<>();
+        serviceDetails.put("serviceId", saloonService.getServiceId());
+        serviceDetails.put("serviceName", saloonService.getServiceName());
+        serviceDetails.put("servicePrice", saloonService.getServicePrice());
+        serviceDetails.put("serviceLength", saloonService.getServiceLength().getServiceLengthId());
+        serviceDetails.put("serviceProvider", saloonService.getServiceProvider().getServiceProviderId());
+
+        return serviceDetails;
     }
 }

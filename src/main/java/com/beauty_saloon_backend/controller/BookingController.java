@@ -1,15 +1,11 @@
-package com.beauty_saloon_backend.controller;
+package com.beauty_saloon_backend.controller;// BookingController.java
 
 import com.beauty_saloon_backend.dto.BookingDTO;
-import com.beauty_saloon_backend.model.Booking;
 import com.beauty_saloon_backend.service.BookingService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,10 +13,9 @@ import java.util.List;
 @RequestMapping("/api/bookings")
 public class BookingController {
     private final BookingService bookingService;
-    private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @Autowired
-    public BookingController (BookingService bookingService) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
@@ -28,5 +23,15 @@ public class BookingController {
     public ResponseEntity<List<Object[]>> findAllBooking() {
         List<Object[]> bookingDTOs = bookingService.findAllBooking();
         return ResponseEntity.ok(bookingDTOs);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createBooking(@RequestBody BookingDTO bookingDTO) {
+        try {
+            bookingService.createBooking(bookingDTO);
+            return ResponseEntity.ok("Booking created successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

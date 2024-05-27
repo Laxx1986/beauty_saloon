@@ -29,4 +29,9 @@ public class UserService {
                 .map(userConverter::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public User registerUser(UserDTO userDTO) {
+        User user = userConverter.toEntity(userDTO);
+        return userRepository.save(user);
+    }
 }
