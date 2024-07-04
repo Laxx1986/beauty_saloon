@@ -6,6 +6,7 @@ import lombok.*;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,10 +14,10 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 public class OpeningTimeDTO {
-    private long openingTimeId;
+    private UUID openingTimeId;
     private Timestamp date;
     private Time timeFrom;
     private Time timeTo;
-    private Long serviceProviderId;
+    private UUID serviceProviderId;
 
 }

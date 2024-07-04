@@ -3,8 +3,10 @@ package com.beauty_saloon_backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,9 +17,12 @@ import java.util.List;
 @Table
 public class ServiceProvider {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "service_provider_id",nullable = false)
-    private long serviceProviderId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID serviceProviderId;
 
     @Column(name="service_provider_name", nullable = false)
     @Size(max = 50)

@@ -3,6 +3,8 @@ package com.beauty_saloon_backend.dto;
 import com.beauty_saloon_backend.model.UserRights;
 import lombok.*;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 @Builder
@@ -10,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserRightsDTO {
 
-    private long userRightsId;
+    private UUID userRightsId;
     private String userRightsName;
     private UserRights userRights;
 

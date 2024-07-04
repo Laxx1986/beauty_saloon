@@ -4,11 +4,13 @@ package com.beauty_saloon_backend.service;
 import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.converter.UserConverter;
 import com.beauty_saloon_backend.model.User;
+import com.beauty_saloon_backend.model.UserRights;
 import com.beauty_saloon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,4 +62,16 @@ public class UserService {
         }
     }
 
+    public UserRights findUserRightsByUsername(String userName) {
+        User user = userRepository.findByUserName(userName);
+        if (user != null) {
+            return user.getUserRights();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
 }

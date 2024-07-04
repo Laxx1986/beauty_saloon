@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 @Transactional
 @Repository
-public interface ServiceProviderRepository extends JpaRepository<ServiceProvider, Long> {
+public interface ServiceProviderRepository extends JpaRepository<ServiceProvider, UUID> {
     ServiceProvider findByServiceProviderName(String serviceProviderName);
 
     @Query("SELECT sp.serviceProviderId, sp.serviceProviderName, u.userName FROM ServiceProvider sp INNER JOIN User u ON sp.User.userId = u.userId")

@@ -11,12 +11,13 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.UUID;
 
 @Transactional
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long> {
+public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT b FROM Booking b WHERE b.saloonService.serviceProvider.serviceProviderId = :serviceProviderId AND b.date = :date AND b.time = :time")
-    List<Booking> findByServiceProviderAndDateAndTime(@Param("serviceProviderId") Long serviceProviderId, @Param("date") Date date, @Param("time") Time time);
+    List<Booking> findByServiceProviderAndDateAndTime(@Param("serviceProviderId") UUID serviceProviderId, @Param("date") Date date, @Param("time") Time time);
 
     @Query("SELECT b.bookingId, b.date, b.time, b.comment, " +
             "u.userName, " +

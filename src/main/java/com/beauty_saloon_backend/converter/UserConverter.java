@@ -8,6 +8,7 @@ import com.beauty_saloon_backend.repository.UserRightsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,7 +35,10 @@ public class UserConverter {
     }
 
     public User toEntity(UserDTO userDTO) {
-        UserRights defaultUserRights = userRightsRepository.findById(3L).orElseThrow(() -> new RuntimeException("Default UserRights not found"));
+        // UUID string, amely az alapértelmezett UserRights azonosítója
+        UUID defaultUserRightsId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        UserRights defaultUserRights = userRightsRepository.findById(defaultUserRightsId)
+                .orElseThrow(() -> new RuntimeException("Default UserRights not found"));
         boolean defaultLoggedIn = false; // Alapértelmezett loggedIn érték
 
         // Az alapértelmezett értékek használata, ha a userDTO-ban nincsenek megadva

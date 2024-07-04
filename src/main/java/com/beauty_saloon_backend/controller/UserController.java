@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/users")
@@ -42,11 +43,13 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody UserDTO userDto) {
         try {
             UserDTO loggedInUser = userService.loginUser(userDto);
+            loggedInUser.setUserRights(userService.findUserRightsByUsername(userDto.getUserName()));
             return ResponseEntity.ok(loggedInUser);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
         }
     }
+
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/logout")
@@ -58,4 +61,12 @@ public class UserController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+        @DeleteMapping("/{userId}")
+        public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
+            userService.deleteUser(userId);
+            return ResponseEntity.noContent().build();
+        }
 }
+
+

@@ -3,8 +3,10 @@ package com.beauty_saloon_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,9 +17,12 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID userId;
 
     @Column(name = "username", nullable = false)
     private String userName;

@@ -2,11 +2,13 @@ package com.beauty_saloon_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Getter
@@ -18,9 +20,12 @@ import java.util.Set;
 @Table
 public class Booking {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="booking_id", nullable = false)
-    private long bookingId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID bookingId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -52,7 +57,5 @@ public class Booking {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name ="confirmed")
-    private boolean confirmed;
 
 }

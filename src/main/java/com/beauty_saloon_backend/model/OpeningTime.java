@@ -2,10 +2,13 @@ package com.beauty_saloon_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
+
 @Data
 @Getter
 @Setter
@@ -16,9 +19,12 @@ import java.util.Date;
 @Table
 public class OpeningTime {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="opening_time_id", nullable = false)
-    private long openingTimeId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID openingTimeId;
 
     @Column(name = "date", nullable = false)
     private Timestamp date;

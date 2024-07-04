@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Transactional
 @Repository
-public interface ServiceRepository extends JpaRepository<SaloonService, Long> {
+public interface ServiceRepository extends JpaRepository<SaloonService, UUID> {
     SaloonService findByServiceName(String serviceName);
 
     @Query("SELECT ss.serviceId, ss.serviceName, ss.servicePrice, sl.serviceLength, sp1.serviceProviderName\n" +

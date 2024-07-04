@@ -5,6 +5,7 @@ import com.beauty_saloon_backend.model.UserRights;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -13,13 +14,13 @@ import java.util.List;
 @Data
 @Builder
 public class UserDTO {
-    private long userId;
+    private UUID userId;
     private String userName;
 
     private String name;
     private String email;
     private String phoneNumber;
-    private List<Long> bookingIds;
+    private List<UUID> bookingIds;
     private String password;
     private UserRights userRights;
 

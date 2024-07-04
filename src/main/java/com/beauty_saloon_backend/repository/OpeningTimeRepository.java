@@ -8,12 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Transactional
 @Repository
-public interface OpeningTimeRepository extends JpaRepository<OpeningTime, Long> {
-    OpeningTime findByOpeningTimeId(Long openingTimeId);
+public interface OpeningTimeRepository extends JpaRepository<OpeningTime, UUID> {
+    OpeningTime findByOpeningTimeId(UUID openingTimeId);
 
     @Query("SELECT ot FROM OpeningTime ot WHERE ot.serviceProvider.serviceProviderId = :serviceProviderId AND ot.date = :dayOfWeek")
-    Optional<OpeningTime> findByServiceProviderAndDayOfWeek(@Param("serviceProviderId") Long serviceProviderId, @Param("dayOfWeek") String dayOfWeek);
+    Optional<OpeningTime> findByServiceProviderAndDayOfWeek(@Param("serviceProviderId") UUID serviceProviderId, @Param("dayOfWeek") String dayOfWeek);
 }

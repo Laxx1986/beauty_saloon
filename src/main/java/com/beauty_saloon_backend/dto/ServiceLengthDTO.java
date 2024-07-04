@@ -2,6 +2,7 @@ package com.beauty_saloon_backend.dto;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Setter
 @Builder
@@ -9,7 +10,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceLengthDTO {
-    private long serviceLengthId;
+    private UUID serviceLengthId;
     private int serviceLength;
 }
 

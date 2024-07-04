@@ -4,13 +4,14 @@ import com.beauty_saloon_backend.model.SaloonService;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceProviderDTO {
-    private long serviceProviderId;
+    private UUID serviceProviderId;
     private String serviceProviderName;
-    private Long userId;
+    private UUID userId;
 }

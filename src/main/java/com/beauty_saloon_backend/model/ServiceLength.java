@@ -2,10 +2,12 @@ package com.beauty_saloon_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,9 +18,12 @@ import java.util.List;
 @Table
 public class ServiceLength {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="service_length_id", nullable = false)
-    private long serviceLengthId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID serviceLengthId;
 
     @Column(name="service_length", nullable = false)
     private int serviceLength;
