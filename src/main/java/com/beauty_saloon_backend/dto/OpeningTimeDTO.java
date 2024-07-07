@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,9 +17,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OpeningTimeDTO {
     private UUID openingTimeId;
-    private Timestamp date;
-    private Time timeFrom;
-    private Time timeTo;
+    private LocalDate date;
+    private LocalTime timeFrom;
+    private LocalTime timeTo;
     private UUID serviceProviderId;
 
 }

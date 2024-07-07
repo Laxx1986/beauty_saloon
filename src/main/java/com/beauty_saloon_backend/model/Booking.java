@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,18 +44,16 @@ public class Booking {
     @JoinColumn(name = "service_id")
     private SaloonService saloonService;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "opening_time_id")
-    private OpeningTime openingTime;
-
     @Column(name = "booking_date")
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "booking_time")
-    private Time time;
+    private LocalTime time;
 
     @Column(name = "comment")
     private String comment;
+
+    private UUID serviceProviderID;
 
 
 }

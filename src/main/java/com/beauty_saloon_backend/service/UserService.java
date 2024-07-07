@@ -44,6 +44,7 @@ public class UserService {
             user.setLoggedIn(true);
             userRepository.save(user);
             return UserDTO.builder()
+                    .userId(user.getUserId())
                     .userName(user.getUserName())
                     .userRights(user.getUserRights())
                     .build();

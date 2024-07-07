@@ -5,8 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
@@ -27,15 +27,15 @@ public class OpeningTime {
     private UUID openingTimeId;
 
     @Column(name = "date", nullable = false)
-    private Timestamp date;
+    private LocalDate date;
 
     @Temporal(TemporalType.TIME)
     @Column(name="time_from", nullable = false)
-    private Time timeFrom;
+    private LocalTime timeFrom;
 
     @Temporal(TemporalType.TIME)
     @Column(name="time_to", nullable = false)
-    private Time timeTo;
+    private LocalTime timeTo;
 
 
 

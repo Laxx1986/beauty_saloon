@@ -1,8 +1,10 @@
-package com.beauty_saloon_backend.controller;// BookingController.java
+package com.beauty_saloon_backend.controller;
 
 import com.beauty_saloon_backend.dto.BookingDTO;
 import com.beauty_saloon_backend.service.BookingService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/bookings")
 public class BookingController {
     private final BookingService bookingService;
+    private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
 
     @Autowired
     public BookingController(BookingService bookingService) {
@@ -27,11 +30,7 @@ public class BookingController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createBooking(@RequestBody BookingDTO bookingDTO) {
-        try {
-            bookingService.createBooking(bookingDTO);
-            return ResponseEntity.ok("Booking created successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        logger.info("Received booking data: {}", bookingDTO);
+        return bookingService.createBooking(bookingDTO);
     }
 }
