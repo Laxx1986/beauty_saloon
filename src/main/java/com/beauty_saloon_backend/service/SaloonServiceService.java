@@ -1,7 +1,7 @@
 package com.beauty_saloon_backend.service;
 
 import com.beauty_saloon_backend.model.SaloonService;
-import com.beauty_saloon_backend.repository.ServiceRepository;
+import com.beauty_saloon_backend.repository.SaloonServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 @Service
 public class SaloonServiceService {
 
-    private final ServiceRepository serviceRepository;
+    private final SaloonServiceRepository serviceRepository;
 
     @Autowired
-    public SaloonServiceService(ServiceRepository serviceRepository) {
+    public SaloonServiceService(SaloonServiceRepository serviceRepository) {
         this.serviceRepository = serviceRepository;
     }
 

@@ -8,7 +8,7 @@ import com.beauty_saloon_backend.model.SaloonService;
 import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.repository.BookingRepository;
 import com.beauty_saloon_backend.repository.OpeningTimeRepository;
-import com.beauty_saloon_backend.repository.ServiceRepository;
+import com.beauty_saloon_backend.repository.SaloonServiceRepository;
 import com.beauty_saloon_backend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,13 @@ public class BookingService {
     private final BookingConverter bookingConverter;
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
-    private final ServiceRepository saloonServiceRepository;
+    private final SaloonServiceRepository saloonServiceRepository;
     private final OpeningTimeRepository openingTimeRepository;
     private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
     @Autowired
     public BookingService(BookingConverter bookingConverter, BookingRepository bookingRepository,
-                          UserRepository userRepository, ServiceRepository saloonServiceRepository,
+                          UserRepository userRepository, SaloonServiceRepository saloonServiceRepository,
                           OpeningTimeRepository openingTimeRepository) {
         this.bookingConverter = bookingConverter;
         this.bookingRepository = bookingRepository;

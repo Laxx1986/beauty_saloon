@@ -7,13 +7,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Transactional
 @Repository
-public interface ServiceRepository extends JpaRepository<SaloonService, UUID> {
+public interface SaloonServiceRepository extends JpaRepository<SaloonService, UUID> {
     SaloonService findByServiceName(String serviceName);
+
+    @Query("SELECT ss FROM SaloonService ss WHERE ss.serviceProvider.serviceProviderId = :serviceProviderId")
+    List<SaloonService> findByServiceProviderId(UUID serviceProviderId);
 
     @Query("SELECT ss.serviceId, ss.serviceName, ss.servicePrice, sl.serviceLength, sp1.serviceProviderName\n" +
             "FROM SaloonService  ss\n" +
