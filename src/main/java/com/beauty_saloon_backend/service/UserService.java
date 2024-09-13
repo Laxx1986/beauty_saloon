@@ -7,6 +7,9 @@ import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.model.UserRights;
 import com.beauty_saloon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +21,24 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
-    public UserService(UserRepository userRepository, UserConverter userConverter) {
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -34,13 +50,15 @@ public class UserService {
 
     public User registerUser(UserDTO userDTO) {
         User user = userConverter.toEntity(userDTO);
+        // Jelszó titkosítása
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
 
     // UserService.java
     public UserDTO loginUser(UserDTO userDTO) {
         User user = userRepository.findByUserName(userDTO.getUserName());
-        if (user != null && user.getPassword().equals(userDTO.getPassword())) {
+        if (user != null && passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
             user.setLoggedIn(true);
             userRepository.save(user);
             return UserDTO.builder()
@@ -49,7 +67,7 @@ public class UserService {
                     .userRights(user.getUserRights())
                     .build();
         } else {
-            throw new RuntimeException("Invalid credentials");
+            throw new RuntimeException("Hibás bejelentkezési adatok!");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -29,6 +30,7 @@ public class ServiceProvider {
     private String serviceProviderName;
 
     @OneToMany(mappedBy = "serviceId", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<SaloonService> saloonServices;
 
     @OneToOne(fetch = FetchType.EAGER)

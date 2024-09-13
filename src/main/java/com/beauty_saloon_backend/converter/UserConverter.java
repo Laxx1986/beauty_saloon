@@ -26,6 +26,7 @@ public class UserConverter {
                 .userId(user.getUserId())
                 .userName(user.getUserName())
                 .email(user.getEmail())
+                .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())
                 .password(user.getPassword())
                 .userRights(user.getUserRights())

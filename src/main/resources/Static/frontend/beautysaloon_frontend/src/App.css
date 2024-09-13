@@ -1,0 +1,34 @@
+#needbackground {
+    background-color: rgba(255, 218, 185, 50%);
+}
+
+#loginbutton {
+    text-align: right;
+    padding-right: 20px;
+    padding-bottom: 10px;
+}
+
+.img-fluid {
+    width: 65%;
+    height: auto;
+    border: 3px solid white;
+    border-radius: 5%;
+    margin-left: 10px;
+}
+
+.saloontitle{
+    text-align: center;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    vertical-align: bottom;
+    horiz-align: center;
+}
+body {
+
+    background-image: url('/public/assets/main_photo.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+

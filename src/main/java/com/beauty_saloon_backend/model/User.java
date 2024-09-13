@@ -1,6 +1,7 @@
 // User.java
 package com.beauty_saloon_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +25,9 @@ public class User {
     )
     private UUID userId;
 
+    @Column(name = "public_key", columnDefinition = "TEXT")
+    private String publicKey;
+
     @Column(name = "username", nullable = false)
     private String userName;
 
@@ -40,10 +44,12 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Booking> bookings;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_rights_id")
+    @JsonIgnore
     private UserRights userRights;
 
     private boolean loggedIn;

@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,10 +31,12 @@ public class SaloonService {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_length_id")
+    @JsonIgnore
     private ServiceLength serviceLength;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_provider_id")
+    @JsonIgnore
     private ServiceProvider serviceProvider;
 
 }
