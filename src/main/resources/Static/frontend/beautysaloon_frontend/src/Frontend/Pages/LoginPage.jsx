@@ -5,21 +5,33 @@ import { useNavigate } from 'react-router-dom';
 function LoginPage({ setLogin, setUserName, setUserRights }) {
     const [localUserName, setLocalUserName] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const isLoggedIn = localStorage.getItem('isLoggedIn');
         const userName = localStorage.getItem('userName');
-        const userRights = JSON.parse(localStorage.getItem('userRights')); // Parse the JSON string
+        const userRightsString = localStorage.getItem('userRights');
         const userId = localStorage.getItem('userId');
+
+        let userRights = null;
+        try {
+            if (userRightsString) {
+                userRights = JSON.parse(userRightsString); // Parse JSON safely
+            }
+        } catch (error) {
+            console.error("Error parsing userRights from localStorage:", error);
+        }
 
         if (isLoggedIn === 'true' && userName && userId) {
             setLogin(true);
             setUserName(userName);
-            setUserRights(userRights); // Pass the entire userRights object
+            setUserRights(userRights);
             navigate('/');
         }
     }, [setLogin, setUserName, setUserRights, navigate]);
+
 
     const handleLogin = async () => {
         try {
@@ -29,26 +41,24 @@ function LoginPage({ setLogin, setUserName, setUserRights }) {
             }, {
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                withCredentials: true
             });
 
             setLogin(true);
             setUserName(response.data.userName);
-            setUserRights(response.data.userRights); // Set the entire userRights object
+            setUserRights(response.data.userRights);
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('userName', response.data.userName);
-            localStorage.setItem('userRights', JSON.stringify(response.data.userRights)); // Store as JSON string
+            localStorage.setItem('userRights', JSON.stringify(response.data.userRights)); // Ensure valid JSON
             localStorage.setItem('userId', response.data.userId);
-
 
             navigate('/');
         } catch (error) {
             console.error("Login failed", error);
         }
-        console.log(localStorage.getItem('userRights'));
-        console.log(localStorage.getItem('userName'));
-        console.log(localStorage.getItem('userId'));
     };
+
 
     return (
         <div>
@@ -58,17 +68,33 @@ function LoginPage({ setLogin, setUserName, setUserRights }) {
                 placeholder="Username"
                 value={localUserName}
                 onChange={(e) => setLocalUserName(e.target.value)}
+                required
             />
             <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
-            <button onClick={handleLogin}>Login</button>
+            <button onClick={handleLogin} disabled={isLoading}>
+                {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+
+            {errorMessage && (
+                <p style={{ color: 'red' }}>{errorMessage}</p>
+            )}
+
+            {/* For debugging purposes, you can see stored data in the console */}
+            {process.env.NODE_ENV === 'development' && (
+                <>
+                    <p>User Rights (Stored): {localStorage.getItem('userRights')}</p>
+                    <p>User Name (Stored): {localStorage.getItem('userName')}</p>
+                    <p>User ID (Stored): {localStorage.getItem('userId')}</p>
+                </>
+            )}
         </div>
     );
 }
 
 export default LoginPage;
-

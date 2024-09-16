@@ -39,7 +39,12 @@ function App() {
     if (storedIsLoggedIn === 'true' && storedUserName && storedUserRights) {
       setIsLoggedIn(true);
       setUserName(storedUserName);
-      setUserRights(JSON.parse(storedUserRights));  // Parse the JSON string to an object
+      try {
+        setUserRights(JSON.parse(storedUserRights));  // Parse the JSON string to an object
+      } catch (error) {
+        console.error("Error parsing userRights from localStorage:", error);
+        setUserRights(null);  // Reset userRights if parsing fails
+      }
     }
   }, [location]);
 
@@ -59,11 +64,10 @@ function App() {
 
     setIsLoggedIn(false);
     setUserName('');
-    setUserRights('');
+    setUserRights(null);
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userName');
     localStorage.removeItem('userRights');
-
   };
 
   return (
@@ -96,8 +100,8 @@ function App() {
               <Route path="/pricelist" element={<PriceListPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              {(userRights?.userRightsName == 'Recepcios' || userRights?.userRightsName == 'Szolgaltato') && <Route path="/admin" element={<AdminPage />} />}
-              {(userRights?.userRightsName == 'User') && <Route path="/Bookings" element={<MyCalendar />} />}
+              {(userRights?.userRightsName === 'Recepcios' || userRights?.userRightsName === 'Szolgaltato') && <Route path="/admin" element={<AdminPage />} />}
+              {(userRights?.userRightsName === 'User') && <Route path="/Bookings" element={<MyCalendar />} />}
               {!login && <Route path="/registration" element={<RegistrationPage />} />}
               <Route path="/userfilter" element={<UserFilterPage />} />
               <Route path="/serviceproviderfilter" element={<ServiceProviderFilterPage />} />

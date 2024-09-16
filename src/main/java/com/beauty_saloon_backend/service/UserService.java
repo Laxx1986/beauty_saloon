@@ -21,17 +21,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Bean
+    private final PasswordEncoder passwordEncoder;
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired
