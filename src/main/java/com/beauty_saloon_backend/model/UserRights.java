@@ -3,6 +3,7 @@ package com.beauty_saloon_backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.UUID;
 
@@ -12,21 +13,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
-public class UserRights {
+@Table(name = "user_rights")
+public class UserRights implements GrantedAuthority {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(updatable = false, nullable = false)
     private UUID userRightsId;
 
-    @Column(name="user_rights_name", nullable = false)
+    @Column(name = "user_rights_name", nullable = false)
     private String userRightsName;
 
-
-    public UserRights(long l) {
+    @Override
+    public String getAuthority() {
+        return userRightsName;
     }
 }

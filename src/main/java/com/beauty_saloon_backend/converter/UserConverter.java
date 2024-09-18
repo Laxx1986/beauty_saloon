@@ -24,7 +24,7 @@ public class UserConverter {
     public UserDTO toDTO(User user) {
         return UserDTO.builder()
                 .userId(user.getUserId())
-                .userName(user.getUserName())
+                .userName(user.getUsername())
                 .email(user.getEmail())
                 .name(user.getName())
                 .phoneNumber(user.getPhoneNumber())

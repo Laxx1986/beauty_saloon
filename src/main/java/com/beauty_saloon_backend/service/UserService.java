@@ -1,4 +1,3 @@
-// UserService.java
 package com.beauty_saloon_backend.service;
 
 import com.beauty_saloon_backend.dto.UserDTO;
@@ -7,8 +6,6 @@ import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.model.UserRights;
 import com.beauty_saloon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-
     private final PasswordEncoder passwordEncoder;
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Autowired
     public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder) {
@@ -42,13 +35,20 @@ public class UserService {
     }
 
     public User registerUser(UserDTO userDTO) {
+        // Ellenőrizd, hogy a felhasználónév vagy email már létezik-e
+        if(userRepository.findByUserName(userDTO.getUserName()) != null){
+            throw new RuntimeException("Username is already taken");
+        }
+        if(userRepository.findByEmail(userDTO.getEmail()) != null){
+            throw new RuntimeException("Email is already in use");
+        }
+
         User user = userConverter.toEntity(userDTO);
         // Jelszó titkosítása
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
 
-    // UserService.java
     public UserDTO loginUser(UserDTO userDTO) {
         User user = userRepository.findByUserName(userDTO.getUserName());
         if (user != null && passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
@@ -56,7 +56,7 @@ public class UserService {
             userRepository.save(user);
             return UserDTO.builder()
                     .userId(user.getUserId())
-                    .userName(user.getUserName())
+                    .userName(user.getUsername())
                     .userRights(user.getUserRights())
                     .build();
         } else {

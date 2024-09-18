@@ -18,16 +18,13 @@ import ServiceFilterPage from "./Frontend/Pages/AdminFilters/ServiceFilterPage";
 import OpeningTimeFilterPage from "./Frontend/Pages/AdminFilters/OpeningTimeFilterPage";
 import BookingFilterPage from "./Frontend/Pages/AdminFilters/BookingFilterPage";
 import Calendar from "./Frontend/Pages/MyCalendar";
-import LoginPage from './Frontend/Pages/LoginPage';
 import MyCalendar from "./Frontend/Pages/MyCalendar";
 
 function App() {
-
   const [login, setLogin] = useState(false);
   const [userName, setUserName] = useState('');
   const [userRights, setUserRights] = useState(null);
   const navigate = useNavigate();
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
@@ -36,24 +33,28 @@ function App() {
     const storedUserName = localStorage.getItem('userName');
     const storedUserRights = localStorage.getItem('userRights');
 
-    if (storedIsLoggedIn === 'true' && storedUserName && storedUserRights) {
+    if (storedIsLoggedIn === 'true' && storedUserName) {
       setIsLoggedIn(true);
       setUserName(storedUserName);
-      try {
-        setUserRights(JSON.parse(storedUserRights));  // Parse the JSON string to an object
-      } catch (error) {
-        console.error("Error parsing userRights from localStorage:", error);
-        setUserRights(null);  // Reset userRights if parsing fails
+
+      if (storedUserRights) {
+        try {
+          setUserRights(JSON.parse(storedUserRights));  // JSON stringet objektummá alakít
+        } catch (error) {
+          console.error("Error parsing userRights from localStorage:", error);
+          setUserRights(null);  // Parsing hiba esetén null
+        }
       }
     }
   }, [location]);
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8080/api/users/logout', { userName }, {
+      await axios.post('http://localhost:8080/logout', null, { // Spring Security logout végpont
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        withCredentials: true // Session cookie elküldése
       });
       setLogin(false);
       setUserName('');
@@ -77,7 +78,10 @@ function App() {
             <h2 className="saloontitle">General Beauty Saloon Nails&Hair</h2>
             {!login ? (
                 <div className="col-12" id="loginbutton">
-                  <button type="button" onClick={() => navigate('/login')}>Bejelentkezés</button>
+                  {/* Irányítsd a Spring Security beépített login oldalára */}
+                  <a href="http://localhost:8080/login">
+                    <button type="button">Bejelentkezés</button>
+                  </a>
                 </div>
             ) : (
                 <div className="col-12" id="logoutbutton">
@@ -109,7 +113,8 @@ function App() {
               <Route path="/servicefilter" element={<ServiceFilterPage />} />
               <Route path="/openingtimefilter" element={<OpeningTimeFilterPage />} />
               <Route path="/bookingfilter" element={<Calendar key="booking-calendar" />} />
-              <Route path="/login" element={<LoginPage setLogin={setLogin} setUserName={setUserName} setUserRights={setUserRights} />} />
+              {/* Távolítsd el ezt a Route-ot */}
+              {/* <Route path="/login" element={<LoginPage setLogin={setLogin} setUserName={setUserName} setUserRights={setUserRights} />} /> */}
             </Routes>
           </div>
         </div>
