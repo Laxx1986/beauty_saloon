@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../../AxiosInterceptor';
 import ConfirmModal from './ConfirmModal';
 import './Tables.css';
 
@@ -10,33 +10,30 @@ function UserFilterPage() {
     const [feedback, setFeedback] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/users/all-users', {
-            auth: {
-                username: 'admin',
-                password: 'almafa'
-            }
-        })
+        axiosInstance.get('/users/all-users')
             .then(response => {
                 setUsers(response.data);
+
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
+                if (error.response && error.response.status === 403) {
+                    setFeedback('Hozzáférés megtagadva. Kérlek, jelentkezz be újra.');
+                } else {
+                    setFeedback('Hiba történt az adatok lekérésekor.');
+                }
             });
     }, []);
 
     const handleDelete = (userId) => {
-        axios.delete(`http://localhost:8080/api/users/${userId}`, {
-            auth: {
-                username: 'admin',
-                password: 'almafa'
-            }
-        })
+        axiosInstance.delete(`/users/${userId}`) // Relatív útvonal
             .then(response => {
                 setUsers(users.filter(user => user.userId !== userId));
                 setFeedback('A felhasználó törölve lett');
             })
             .catch(error => {
                 console.error('Error deleting user:', error);
+                setFeedback('Hiba történt a felhasználó törlésekor');
             });
     };
 
@@ -65,11 +62,9 @@ function UserFilterPage() {
                         <table className="table table-striped table-hover custom-table">
                             <thead>
                             <tr>
-                                <th>Felhasználó azonosító</th>
                                 <th>Felhasználó név</th>
                                 <th>Email</th>
                                 <th>Telefonszám</th>
-                                <th>Jelszó</th>
                                 <th>Felhasználó jogosultság szint</th>
                                 <th>Műveletek</th>
                             </tr>
@@ -77,11 +72,9 @@ function UserFilterPage() {
                             <tbody>
                             {users.map(user => (
                                 <tr className="rows" key={user.userId}>
-                                    <td>{user.userId}</td>
                                     <td>{user.userName}</td>
                                     <td>{user.email}</td>
                                     <td>{user.phoneNumber}</td>
-                                    <td>{user.password}</td>
                                     <td>{user.userRights.userRightsName}</td>
                                     <td>
                                         <Link to={`/edit-user/${user.userId}`}>

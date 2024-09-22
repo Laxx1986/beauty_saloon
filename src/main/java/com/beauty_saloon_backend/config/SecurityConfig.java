@@ -1,33 +1,42 @@
 package com.beauty_saloon_backend.config;
 
+import com.beauty_saloon_backend.filter.JwtRequestFilter;
 import com.beauty_saloon_backend.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.*;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.*;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+
 
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService){
+    public SecurityConfig(CustomUserDetailsService userDetailsService,
+                          JwtRequestFilter jwtRequestFilter){
         this.userDetailsService = userDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,23 +44,17 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/authenticate", "/api/users/register").permitAll()
                         .requestMatchers("/", "/index.html", "/Static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/home", "/services", "/prices", "/about", "/contact").permitAll()
-                        .requestMatchers("/api/users/register").permitAll()
-                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/api/users/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        //.loginPage("/api/users/login") // Eltávolítva a saját login page
-                        .defaultSuccessUrl("http://localhost:3000", true)
-                        .permitAll()
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                )
-                .userDetailsService(userDetailsService); // Custom UserDetailsService használata
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .userDetailsService(userDetailsService);
 
         return http.build();
     }
@@ -75,7 +78,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // AuthenticationManager bean definiálása
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
         return authConfig.getAuthenticationManager();

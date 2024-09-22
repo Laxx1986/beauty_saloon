@@ -6,6 +6,7 @@ import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.model.UserRights;
 import com.beauty_saloon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,13 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDTO getUserById(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userConverter.toDTO(user);
+    }
+
     public User registerUser(UserDTO userDTO) {
-        // Ellenőrizd, hogy a felhasználónév vagy email már létezik-e
         if(userRepository.findByUserName(userDTO.getUserName()) != null){
             throw new RuntimeException("Username is already taken");
         }
@@ -44,46 +50,22 @@ public class UserService {
         }
 
         User user = userConverter.toEntity(userDTO);
-        // Jelszó titkosítása
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
 
-    public UserDTO loginUser(UserDTO userDTO) {
-        User user = userRepository.findByUserName(userDTO.getUserName());
-        if (user != null && passwordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
-            user.setLoggedIn(true);
-            userRepository.save(user);
-            return UserDTO.builder()
-                    .userId(user.getUserId())
-                    .userName(user.getUsername())
-                    .userRights(user.getUserRights())
-                    .build();
-        } else {
-            throw new RuntimeException("Hibás bejelentkezési adatok!");
+    public String getUserRightsByUsername(String username) {
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("A felhasználó nem található!");
         }
-    }
-
-    public void logoutUser(String userName) {
-        User user = userRepository.findByUserName(userName);
-        if (user != null) {
-            user.setLoggedIn(false);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }
-
-    public UserRights findUserRightsByUsername(String userName) {
-        User user = userRepository.findByUserName(userName);
-        if (user != null) {
-            return user.getUserRights();
-        } else {
-            throw new RuntimeException("User not found");
-        }
+        return user.getUserRights().getUserRightsName();
     }
 
     public void deleteUser(UUID userId) {
+        if(!userRepository.existsById(userId)){
+            throw new RuntimeException("User not found");
+        }
         userRepository.deleteById(userId);
     }
 }

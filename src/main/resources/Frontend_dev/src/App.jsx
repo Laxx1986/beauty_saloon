@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import {Link, Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+import axiosInstance from './AxiosInterceptor';
 import Menu from './Frontend/Menu';
 import HomePage from "./Frontend/Pages/HomePage";
 import ServicePage from "./Frontend/Pages/ServicePage";
@@ -16,16 +16,14 @@ import ServiceProviderFilterPage from "./Frontend/Pages/AdminFilters/ServiceProv
 import ServiceLengthFilterPage from "./Frontend/Pages/AdminFilters/ServiceLengthFilterPage";
 import ServiceFilterPage from "./Frontend/Pages/AdminFilters/ServiceFilterPage";
 import OpeningTimeFilterPage from "./Frontend/Pages/AdminFilters/OpeningTimeFilterPage";
-import BookingFilterPage from "./Frontend/Pages/AdminFilters/BookingFilterPage";
-import Calendar from "./Frontend/Pages/MyCalendar";
 import MyCalendar from "./Frontend/Pages/MyCalendar";
+import LoginPage from "./Frontend/Pages/LoginPage";
 
 function App() {
-  const [login, setLogin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userRights, setUserRights] = useState(null);
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -39,36 +37,25 @@ function App() {
 
       if (storedUserRights) {
         try {
-          setUserRights(JSON.parse(storedUserRights));  // JSON stringet objektummá alakít
+          const parsedRights = JSON.parse(storedUserRights); // Parse only if it exists
+          setUserRights(parsedRights);
         } catch (error) {
           console.error("Error parsing userRights from localStorage:", error);
-          setUserRights(null);  // Parsing hiba esetén null
+          setUserRights(null); // Handle parsing error
         }
       }
     }
   }, [location]);
 
   const handleLogout = async () => {
-    try {
-      await axios.post('http://localhost:8080/logout', null, { // Spring Security logout végpont
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true // Session cookie elküldése
-      });
-      setLogin(false);
-      setUserName('');
-      setUserRights(null);
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-
     setIsLoggedIn(false);
     setUserName('');
     setUserRights(null);
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
     localStorage.removeItem('userName');
     localStorage.removeItem('userRights');
+    navigate('/login');
   };
 
   return (
@@ -76,12 +63,11 @@ function App() {
         <div className="row" id="needbackground">
           <div className="col-12">
             <h2 className="saloontitle">General Beauty Saloon Nails&Hair</h2>
-            {!login ? (
+            {!isLoggedIn ? (
                 <div className="col-12" id="loginbutton">
-                  {/* Irányítsd a Spring Security beépített login oldalára */}
-                  <a href="http://localhost:8080/login">
+                  <Link to="/login">
                     <button type="button">Bejelentkezés</button>
-                  </a>
+                  </Link>
                 </div>
             ) : (
                 <div className="col-12" id="logoutbutton">
@@ -93,28 +79,35 @@ function App() {
         </div>
         <div className="row" id="needbackground">
           <div className="col-12">
-            <Menu login={login} userRights={userRights} />
+            <Menu login={isLoggedIn} userRights={userRights} />
           </div>
         </div>
         <div className="row" id="needbackground">
-          <div className="col-6">
+          <div className="col-12">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/services" element={<ServicePage />} />
               <Route path="/pricelist" element={<PriceListPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
-              {(userRights?.userRightsName === 'Recepcios' || userRights?.userRightsName === 'Szolgaltato') && <Route path="/admin" element={<AdminPage />} />}
-              {(userRights?.userRightsName === 'User') && <Route path="/Bookings" element={<MyCalendar />} />}
-              {!login && <Route path="/registration" element={<RegistrationPage />} />}
-              <Route path="/userfilter" element={<UserFilterPage />} />
-              <Route path="/serviceproviderfilter" element={<ServiceProviderFilterPage />} />
-              <Route path="/servicelengthfilter" element={<ServiceLengthFilterPage />} />
-              <Route path="/servicefilter" element={<ServiceFilterPage />} />
-              <Route path="/openingtimefilter" element={<OpeningTimeFilterPage />} />
-              <Route path="/bookingfilter" element={<Calendar key="booking-calendar" />} />
-              {/* Távolítsd el ezt a Route-ot */}
-              {/* <Route path="/login" element={<LoginPage setLogin={setLogin} setUserName={setUserName} setUserRights={setUserRights} />} /> */}
+              {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
+                  <Route path="/admin" element={<AdminPage />} />
+              )}
+              {userRights === 'User' && (
+                  <Route path="/Bookings" element={<MyCalendar />} />
+              )}
+              {!isLoggedIn && <Route path="/registration" element={<RegistrationPage />} />}
+              {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
+                  <>
+                    <Route path="/userfilter" element={<UserFilterPage />} />
+                    <Route path="/serviceproviderfilter" element={<ServiceProviderFilterPage />} />
+                    <Route path="/servicelengthfilter" element={<ServiceLengthFilterPage />} />
+                    <Route path="/servicefilter" element={<ServiceFilterPage />} />
+                    <Route path="/openingtimefilter" element={<OpeningTimeFilterPage />} />
+                    <Route path="/bookingfilter" element={<MyCalendar key="booking-calendar" />} />
+                  </>
+              )}
+              <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} setUserRights={setUserRights} />} />
             </Routes>
           </div>
         </div>

@@ -1,10 +1,6 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
 
 function Menu({ login, userRights }) {
-    useEffect(() => {
-    }, [userRights]);
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid justify-content-center">
@@ -25,12 +21,12 @@ function Menu({ login, userRights }) {
                         <li className="nav-item">
                             <Link className="nav-link" to="/contact">Contact us</Link>
                         </li>
-                        {userRights && (userRights.userRightsName === 'Recepcios' || userRights.userRightsName === 'Szolgaltato') && (
+                        {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/admin">Admin</Link>
                             </li>
                         )}
-                        {userRights && userRights.userRightsName === 'User' && (
+                        {userRights === 'User' && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/Bookings">Bookings</Link>
                             </li>
