@@ -1,24 +1,25 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import "./Tables.css";
-import axios from "axios";
+import axiosInstance from "../../../AxiosInterceptor";
 
 function ServiceFilterPage() {
     const [services, setServices] = useState([]);
+    const [feedback, setFeedback] = useState('');
+
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/services/all-service", {
-            auth: {
-                username: 'admin', // Felhasználónév
-                password: 'almafa' // Jelszó
-            }
+        axiosInstance.get('/services/all-service') .then(response => {
+            setServices(response.data);
+
         })
-            .then(response => {
-                setServices(response.data);
-                console.log(response.data);
-            })
             .catch(error => {
-                console.error('Error fetching data:', error)
+                console.error('Error fetching data:', error);
+                if (error.response && error.response.status === 403) {
+                    setFeedback('Hozzáférés megtagadva. Kérlek, jelentkezz be újra.');
+                } else {
+                    setFeedback('Hiba történt az adatok lekérésekor.');
+                }
             });
     }, []);
 

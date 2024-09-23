@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosInstance from "../../AxiosInterceptor";
 
 function BookingForm() {
     const [serviceProviders, setServiceProviders] = useState([]);
@@ -9,21 +10,29 @@ function BookingForm() {
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [comment, setComment] = useState('');
+    const [feedback, setFeedback] = useState('');
+
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/serviceProviders/all-serviceprovider')
+        axiosInstance.get('/serviceProviders/all-serviceprovider')
             .then(response => {
-                console.log('Service Providers:', response.data); // Log the data
                 setServiceProviders(response.data);
+
             })
-            .catch(error => console.error('Error fetching service providers:', error));
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                if (error.response && error.response.status === 403) {
+                    setFeedback('Hozzáférés megtagadva. Kérlek, jelentkezz be újra.');
+                } else {
+                    setFeedback('Hiba történt az adatok lekérésekor.');
+                }
+            });
     }, []);
 
     useEffect(() => {
         if (selectedServiceProvider) {
-            axios.get(`http://localhost:8080/api/bookings/service-provider/${selectedServiceProvider}`)
+            axiosInstance.get(`/bookings/service-provider/${selectedServiceProvider}`)
                 .then(response => {
-                    console.log('Services for ServiceProvider:', response.data); // Log the data
                     setServices(response.data);
                 })
                 .catch(error => console.error('Error fetching services:', error));
@@ -33,10 +42,9 @@ function BookingForm() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log('Selected Service Provider before submit:', selectedServiceProvider);
 
         if (!selectedServiceProvider || !selectedService || !date || !time || !comment) {
-            alert('Please fill out all fields');
+            alert('Kérlek minden mezőt tölts ki!');
             return;
         }
 
@@ -49,12 +57,16 @@ function BookingForm() {
             comment
         };
 
-        console.log('Selected Service Provider:', selectedServiceProvider);
-        console.log('Booking Request:', bookingRequest);
 
-        axios.post('http://localhost:8080/api/bookings/create', bookingRequest)
+        axiosInstance.post('/bookings/create', bookingRequest)
             .then(response => alert(response.data))
-            .catch(error => alert('Error creating booking: ' + error.response.data));
+            .catch(error => {
+                if (error.response && error.response.status === 403) {
+                    setFeedback('Hozzáférés megtagadva. Kérlek, jelentkezz be újra.');
+                } else {
+                    setFeedback('Nem sikerült a foglalást elküldeni: ' + (error.response?.data || error.message));
+                }
+            });
     };
 
     const getUserId = () => {

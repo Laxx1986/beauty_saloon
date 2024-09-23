@@ -4,6 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import BookingForm from './BookingForm';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import axiosInstance from "../../AxiosInterceptor";
 
 const localizer = momentLocalizer(moment);
 
@@ -12,7 +13,7 @@ function MyCalendar() {
     const [showBookingForm, setShowBookingForm] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/bookings/all-booking')
+        axiosInstance.get('/bookings/all-booking')
             .then(response => {
                 const bookings = response.data.map(booking => {
                     const [id, date, time, comment, userName, serviceProviderName, serviceName, serviceLength] = booking;

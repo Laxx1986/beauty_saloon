@@ -7,19 +7,19 @@ function Menu({ login, userRights }) {
                 <div id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Home page</Link>
+                            <Link className="nav-link" to="/">Kezdőlap</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/services">Services</Link>
+                            <Link className="nav-link" to="/services">Szolgáltatások</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/pricelist">Price List</Link>
+                            <Link className="nav-link" to="/pricelist">Árlista</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/about">About us</Link>
+                            <Link className="nav-link" to="/about">Rólunk</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/contact">Contact us</Link>
+                            <Link className="nav-link" to="/contact">Kapcsolat</Link>
                         </li>
                         {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
                             <li className="nav-item">
@@ -28,12 +28,12 @@ function Menu({ login, userRights }) {
                         )}
                         {userRights === 'User' && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/Bookings">Bookings</Link>
+                                <Link className="nav-link" to="/Bookings">Foglalások</Link>
                             </li>
                         )}
                         {!login && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/registration">Register</Link>
+                                <Link className="nav-link" to="/registration">Regisztráció</Link>
                             </li>
                         )}
                     </ul>

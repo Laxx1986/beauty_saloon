@@ -48,6 +48,13 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index.html", "/Static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/home", "/services", "/prices", "/about", "/contact").permitAll()
                         .requestMatchers("/api/users/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/serviceProviders/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/serviceLengths/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/openingTimes/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/bookings/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/bookings/create").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/services/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api//bookings/service-provider/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

@@ -1,25 +1,26 @@
 import {Link} from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import "./Tables.css";
-import axios from "axios";
+import axiosInstance from "../../../AxiosInterceptor";
 
 function OpeningTimeFilterPage() {
     const [openingTimes, setOpeningTimes] = useState([]);
+    const [feedback, setFeedback] = useState('');
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/openingTimes", {
-            auth: {
-                username: 'admin', // Felhasználónév
-                password: 'almafa' // Jelszó
-            }
+        axiosInstance.get("/openingTimes") .then(response => {
+            setOpeningTimes(response.data);
+
         })
-            .then(response => {
-                setOpeningTimes(response.data)
-            })
             .catch(error => {
-                console.error('Error fetching data:', error)
+                console.error('Error fetching data:', error);
+                if (error.response && error.response.status === 403) {
+                    setFeedback('Hozzáférés megtagadva. Kérlek, jelentkezz be újra.');
+                } else {
+                    setFeedback('Hiba történt az adatok lekérésekor.');
+                }
             });
-    })
+    }, []);
 
     return (
         <>
