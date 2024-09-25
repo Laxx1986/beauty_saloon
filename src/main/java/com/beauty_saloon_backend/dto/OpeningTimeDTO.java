@@ -21,5 +21,6 @@ public class OpeningTimeDTO {
     private LocalTime timeFrom;
     private LocalTime timeTo;
     private UUID serviceProviderId;
-
+    private String userName;
+    private String name;
 }

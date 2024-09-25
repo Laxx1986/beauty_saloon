@@ -37,7 +37,7 @@ public class UserConverter {
 
     public User toEntity(UserDTO userDTO) {
         // UUID string, amely az alapértelmezett UserRights azonosítója
-        UUID defaultUserRightsId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        UUID defaultUserRightsId = UUID.fromString("a765faa2-390e-46f0-b5cc-c7380451fc6e");
         UserRights defaultUserRights = userRightsRepository.findById(defaultUserRightsId)
                 .orElseThrow(() -> new RuntimeException("Default UserRights not found"));
         boolean defaultLoggedIn = false; // Alapértelmezett loggedIn érték

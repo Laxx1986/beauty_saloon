@@ -24,6 +24,13 @@ function OpeningTimeFilterPage() {
 
     return (
         <>
+            <div className="row">
+                <div className="col">
+                    <Link to="/admin">
+                        <button>Vissza</button>
+                    </Link>
+                </div>
+            </div>
             <div className="col-12">
                 <h1 className="titleoflist">Nyitvatartás</h1>
             </div>
@@ -34,21 +41,21 @@ function OpeningTimeFilterPage() {
                         <table className="table table-striped table-hover custom-table">
                             <thead>
                             <tr>
-                                <th>Nyitvatartás azonosító</th>
                                 <th>Nyitvatartás dátum</th>
                                 <th>Nyitvatartás kezdete</th>
                                 <th>Nyitvatartás Vége</th>
-                                <th>Szolgáltató azonosító</th>
+                                <th>Felhasználó név</th>
+                                <th>Szolgáltató név</th>
                             </tr>
                             </thead>
                             <tbody>
                             {openingTimes.map(openingTime => (
-                                <tr className="rows" key={"openingTime.openingTimeId"}>
-                                    <td>{openingTime.openingTimeId}</td>
+                                <tr className="rows" key={openingTime.openingTimeId}>
                                     <td>{openingTime.date}</td>
                                     <td>{openingTime.timeFrom}</td>
                                     <td>{openingTime.timeTo}</td>
-                                    <td>{openingTime.serviceProviderId}</td>
+                                    <td>{openingTime.userName}</td>
+                                    <td>{openingTime.name}</td>
                                 </tr>
                             ))}
                             </tbody>

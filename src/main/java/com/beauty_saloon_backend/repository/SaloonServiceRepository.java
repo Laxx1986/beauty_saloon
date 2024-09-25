@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.repository;
 
+import com.beauty_saloon_backend.dto.ServiceDetailsDTO;
 import com.beauty_saloon_backend.model.SaloonService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,15 +13,21 @@ import java.util.UUID;
 @Transactional
 @Repository
 public interface SaloonServiceRepository extends JpaRepository<SaloonService, UUID> {
-    SaloonService findByServiceName(String serviceName);
+
 
     @Query("SELECT ss FROM SaloonService ss WHERE ss.serviceProvider.serviceProviderId = :serviceProviderId")
     List<SaloonService> findByServiceProviderId(UUID serviceProviderId);
 
-    @Query("SELECT ss.serviceId, ss.serviceName, ss.servicePrice, sl.serviceLength, sp1.serviceProviderName\n" +
-            "FROM SaloonService  ss\n" +
-            "INNER JOIN ServiceLength sl ON ss.serviceLength.serviceLengthId = sl.serviceLengthId\n" +
-            "INNER JOIN ServiceProvider sp1 ON ss.serviceProvider.serviceProviderId = sp1.serviceProviderId\n")
-    List<Object[]> findServiceDetails();
+    @Query("SELECT new com.beauty_saloon_backend.dto.ServiceDetailsDTO(s.serviceId, s.serviceName, s.servicePrice, " +
+            "sl.serviceLength, sp.serviceProviderName) " +
+            "FROM SaloonService s " +
+            "JOIN s.serviceLength sl " +
+            "JOIN s.serviceProvider sp")
+    List<ServiceDetailsDTO> findAllServiceDetailsWithNames();
+
+
+
+
+
 
 }

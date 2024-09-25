@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import React, {useState, useEffect} from "react";
-import './Tables.css'
+import React, { useState, useEffect } from "react";
+import './Tables.css';
 import axiosInstance from "../../../AxiosInterceptor";
 
 function ServiceProviderFilterPage() {
@@ -8,10 +8,8 @@ function ServiceProviderFilterPage() {
     const [feedback, setFeedback] = useState('');
 
     useEffect(() => {
-        axiosInstance.get('/serviceProviders/all-serviceprovider')
-            .then(response => {
+        axiosInstance.get('/serviceProviders/with-users')  .then(response => {
                 setServiceProviders(response.data);
-
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -34,17 +32,17 @@ function ServiceProviderFilterPage() {
                         <table className="table table-striped table-hover custom-table">
                             <thead>
                             <tr>
-                                <th>Szolgáltató azonosító</th>
                                 <th>Szolgáltató név</th>
+                                <th>Felhasználó név</th>
+                                <th>Név</th>
                             </tr>
                             </thead>
                             <tbody>
                             {serviceProviders.map(serviceProvider => (
-                                <tr className="rows" key={serviceProvider.serviceProviderId}>
-                                    <td>{serviceProvider.serviceProviderId}</td>
+                                <tr className="rows" key={serviceProvider.serviceProviderName + serviceProvider.userName}>
                                     <td>{serviceProvider.serviceProviderName}</td>
-                                    {/* Nem biztos, hogy a felhasználó nevet is meg kell jeleníteni, de ha igen, akkor meg kell adni az objektum tulajdonságát */}
-                                    {/* <td>{serviceProvider.serviceProviderUserName}</td> */}
+                                    <td>{serviceProvider.userName}</td>
+                                    <td>{serviceProvider.name}</td>
                                 </tr>
                             ))}
                             </tbody>

@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table
+@Table (name = "service_length")
 public class ServiceLength {
     @Id
     @GeneratedValue(generator = "UUID")

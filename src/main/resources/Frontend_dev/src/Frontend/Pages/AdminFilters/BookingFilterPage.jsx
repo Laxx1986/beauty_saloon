@@ -24,6 +24,13 @@ function BookingFilterPage() {
 
     return (
         <>
+            <div className="row">
+                <div className="col">
+                    <Link to="/admin">
+                        <button>Vissza</button>
+                    </Link>
+                </div>
+            </div>
             <div className="col-12">
                 <h1 className="titleoflist">Foglalások listája</h1>
             </div>

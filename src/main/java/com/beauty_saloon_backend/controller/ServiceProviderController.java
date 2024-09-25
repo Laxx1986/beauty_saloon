@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.controller;
 
+import com.beauty_saloon_backend.dto.ServiceProviderWithUserDTO;
 import com.beauty_saloon_backend.model.ServiceProvider;
 import com.beauty_saloon_backend.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,11 @@ public class ServiceProviderController {
         } else {
             return serviceProviderObject;
         }
+    }
+
+    @GetMapping("/with-users")
+    public ResponseEntity<List<ServiceProviderWithUserDTO>> findAllServiceProvidersWithUsers() {
+        List<ServiceProviderWithUserDTO> serviceProviderDetails = serviceProviderService.getAllServiceProvidersWithUsers();
+        return ResponseEntity.ok(serviceProviderDetails);
     }
 }

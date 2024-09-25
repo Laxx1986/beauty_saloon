@@ -7,7 +7,9 @@ import com.beauty_saloon_backend.model.SaloonService;
 import com.beauty_saloon_backend.repository.OpeningTimeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,21 @@ public class OpeningTimeService {
         List<OpeningTime> openingTimes = openingTimeRepository.findAll();
         return openingTimes.stream()
                 .map(openingTimeConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getAllOpeningTimesWithUsers() {
+        List<OpeningTime> openingTimes = openingTimeRepository.findAll();
+        return openingTimes.stream()
+                .map(openingTime -> {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("date", openingTime.getDate());
+                    result.put("timeFrom", openingTime.getTimeFrom());
+                    result.put("timeTo", openingTime.getTimeTo());
+                    result.put("userName", openingTime.getServiceProvider().getUser().getUsername());
+                    result.put("name", openingTime.getServiceProvider().getUser().getName());
+                    return result;
+                })
                 .collect(Collectors.toList());
     }
 }

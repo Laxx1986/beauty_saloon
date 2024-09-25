@@ -52,6 +52,13 @@ function UserFilterPage() {
 
     return (
         <>
+            <div className="row">
+                <div className="col">
+                    <Link to="/admin">
+                        <button>Vissza</button>
+                    </Link>
+                </div>
+            </div>
             <div className="col-12">
                 <h1 className="titleoflist">Regisztrált felhasználók listája</h1>
                 {feedback && <p className="feedback">{feedback}</p>}

@@ -13,6 +13,9 @@ public class ServiceProviderConverter {
         serviceProviderDTO.setServiceProviderId(serviceProvider.getServiceProviderId());
         serviceProviderDTO.setServiceProviderName(serviceProvider.getServiceProviderName());
         serviceProviderDTO.setUserId(serviceProvider.getUser().getUserId());
+        if (serviceProvider.getUser() != null) {
+            serviceProviderDTO.setName(serviceProvider.getUser().getName());
+        }
         return serviceProviderDTO;
     }
 

@@ -24,31 +24,6 @@ function ServiceLengthFilterPage(){
 
     return (
         <>
-            <div className="col-12">
-                <h1 className="titleoflist">Szolgáltatás idők listája</h1>
-            </div>
-
-            <div className="container col-12">
-                <div className="row">
-                <div className="table-responsive">
-                    <table className="table table-striped table-hover custom-table">
-                        <thead>
-                             <tr>
-                                 <th>Szolgáltatás hossz azonosító</th>
-                                 <th>Szolgáltatás hossz</th>
-                             </tr>
-                        </thead>
-                        <tbody>
-                            {serviceLengths.map(serviceLength => (
-                                <tr className="rows" key={serviceLength.serviceLengthId}>
-                                    <td>{serviceLength.serviceLengthId}</td>
-                                    <td>{serviceLength.serviceLength}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             <div className="row">
                 <div className="col">
                     <Link to="/admin">
@@ -56,7 +31,39 @@ function ServiceLengthFilterPage(){
                     </Link>
                 </div>
             </div>
-        </div>
+            <div className="col-12">
+                <h1 className="titleoflist">Szolgáltatás idők listája</h1>
+            </div>
+
+            <div className="container col-12">
+                <div className="row">
+                    <div className="table-responsive">
+                        <table className="table table-striped table-hover custom-table">
+                            <thead>
+                            <tr>
+                                <th>Szolgáltatás hossz azonosító</th>
+                                <th>Szolgáltatás hossz</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {serviceLengths.map(serviceLength => (
+                                <tr className="rows" key={serviceLength.serviceLengthId}>
+                                    <td>{serviceLength.serviceLengthId}</td>
+                                    <td>{serviceLength.serviceLength}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <Link to="/admin">
+                            <button>Vissza</button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }

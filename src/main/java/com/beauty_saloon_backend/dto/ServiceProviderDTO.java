@@ -14,4 +14,5 @@ public class ServiceProviderDTO {
     private UUID serviceProviderId;
     private String serviceProviderName;
     private UUID userId;
+    private String name;
 }

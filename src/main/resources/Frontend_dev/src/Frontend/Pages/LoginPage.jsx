@@ -24,7 +24,7 @@ function LoginPage({ setIsLoggedIn, setUserName, setUserRights }) {
                 setUserName(username);
                 setUserRights(userRights);
 
-                navigate('/'); // Redirect
+                navigate('/');
             })
             .catch(error => {
                 console.error('Login error:', error);

@@ -37,4 +37,22 @@ public class SaloonServiceService {
 
         return serviceDetails;
     }
+
+    public List<Object> getAllServiceDetailsWithNames() {
+        return serviceRepository.findAll()
+                .stream()
+                .map(this::createServiceDetailsObjectWithNames)
+                .collect(Collectors.toList());
+    }
+
+    private Object createServiceDetailsObjectWithNames(SaloonService saloonService) {
+        Map<String, Object> serviceDetails = new HashMap<>();
+        serviceDetails.put("serviceId", saloonService.getServiceId());
+        serviceDetails.put("serviceName", saloonService.getServiceName());
+        serviceDetails.put("servicePrice", saloonService.getServicePrice());
+        serviceDetails.put("serviceLength", saloonService.getServiceLength().getServiceLength());
+        serviceDetails.put("serviceProvider", saloonService.getServiceProvider().getServiceProviderName());
+        return serviceDetails;
+    }
+
 }

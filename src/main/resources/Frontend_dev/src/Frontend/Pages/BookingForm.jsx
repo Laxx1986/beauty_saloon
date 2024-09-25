@@ -74,6 +74,7 @@ function BookingForm() {
     };
 
     return (
+
         <form onSubmit={handleSubmit}>
             <div>
                 <label>Service Provider:</label>
@@ -107,7 +108,9 @@ function BookingForm() {
             </div>
             <button type="submit">Book</button>
         </form>
+
     );
+
 }
 
 export default BookingForm;

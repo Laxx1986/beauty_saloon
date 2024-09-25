@@ -1,10 +1,12 @@
 package com.beauty_saloon_backend.controller;
 
 import com.beauty_saloon_backend.dto.UserDTO;
-import com.beauty_saloon_backend.model.User;
+import com.beauty_saloon_backend.exceptions.EmailAlreadyExistsException;
+import com.beauty_saloon_backend.exceptions.UsernameAlreadyExistsException;
 import com.beauty_saloon_backend.repository.UserRepository;
 import com.beauty_saloon_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +36,32 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDto) {
         try {
+            // A felhasználó regisztrációjának megkísérlése
             userService.registerUser(userDto);
-            return ResponseEntity.ok("User registered successfully");
+            // Sikeres regisztráció esetén visszaadjuk a megfelelő választ
+            return ResponseEntity.ok("Sikeres regisztráció");
+        } catch (UsernameAlreadyExistsException e) {
+            // Ha a felhasználónév már foglalt, akkor 400-as státuszkóddal visszaadunk egy hibaüzenetet
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("A felhasználónév már foglalt"));
+        } catch (EmailAlreadyExistsException e) {
+            // Ha az email cím már foglalt, akkor 400-as státuszkóddal visszaadunk egy hibaüzenetet
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Az email cím már foglalt"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+            // Ismeretlen hiba esetén visszaadunk egy általános hibaüzenetet
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("Ismeretlen hiba történt"));
+        }
+    }
+
+    public static class ErrorResponse {
+        private String message;
+
+        public ErrorResponse(String message) {
+            this.message = message;
+        }
+
+        // Getter metódus
+        public String getMessage() {
+            return message;
         }
     }
 

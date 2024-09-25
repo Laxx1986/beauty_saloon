@@ -13,6 +13,8 @@ public class OpeningTimeConverter {
         openingTimeDTO.setTimeFrom(openingTime.getTimeFrom());
         openingTimeDTO.setTimeTo(openingTime.getTimeTo());
         openingTimeDTO.setServiceProviderId(openingTime.getServiceProvider().getServiceProviderId());
+        openingTimeDTO.setUserName(openingTime.getServiceProvider().getUser().getUsername());
+        openingTimeDTO.setName(openingTime.getServiceProvider().getUser().getName());
         return openingTimeDTO;
     }
 

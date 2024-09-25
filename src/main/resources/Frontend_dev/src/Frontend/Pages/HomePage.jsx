@@ -4,20 +4,17 @@ function HomePage() {
     return (
       <div>
           <img src={process.env.PUBLIC_URL + '/assets/saloon_photo.jpg'} className="img-fluid" alt="saloon_photo"/>
-          <h1>Lorem Ipsum</h1>
-          <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ullamcorper tellus id sem consequat, a congue lorem vestibulum.
-              Nulla facilisi. Vivamus ullamcorper sagittis leo. Aliquam erat volutpat. In hac habitasse platea dictumst. Sed vehicula varius urna, eget mattis
-              sapien bibendum non. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer id consequat metus.
-              Ut scelerisque elit sed tincidunt vehicula. Nulla facilisi. Maecenas tincidunt erat eu mi rhoncus, nec consequat libero varius.
-              Suspendisse potenti. Curabitur non massa vitae mi aliquam faucibus ut id dolor. Nam non luctus justo. Ut nec ultricies nulla. Pellentesque habitant
-              morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer tincidunt nunc a quam vestibulum, nec finibus purus scelerisque.
-              Vivamus tincidunt volutpat nulla, vel ultricies justo fermentum non. Aliquam vel arcu auctor, venenatis arcu at, convallis risus.
-              Sed tincidunt magna eu nunc ultricies scelerisque. Curabitur eget faucibus erat. Duis id velit eget nulla cursus cursus.
-              Integer in fringilla eros. Sed sit amet pharetra justo. Vestibulum vel est volutpat, iaculis dui eget, tincidunt odio.
-              Proin convallis nisi in eros tristique venenatis. In hac habitasse platea dictumst. Curabitur ac odio nec lacus varius finibus nec in justo.
-              Ut lobortis magna vitae mauris tincidunt commodo. Mauris fermentum, metus at gravida feugiat, lectus sapien viverra libero, vel interdum est
-              purus in justo. Nunc ornare sodales mauris, in rutrum lectus cursus sit amet. Nullam nec pretium velit, id sagittis elit. Nulla tincidunt nisl
-              et accumsan pharetra. Nam ut magna non magna fermentum efficitur vel nec purus.
+          <h1>Beauty Szépségszalon</h1>
+          <span><h2>Műköröm Szolgáltatás</h2>
+    <p><strong>Műköröm szolgáltatásunk</strong> a legújabb divatirányzatoknak megfelelően készült, széles választékban elérhető színek és minták közül lehet választani. Műköröm technikusaink ügyelnek arra, hogy a körömformák és a díszítések tökéletesen illeszkedjenek a vendég stílusához. A tartós és elegáns körmök mellett a műköröm építése és díszítése révén vendégeink kifejezhetik egyéni stílusukat.</p>
+
+    <h2>Pedikűr Szolgáltatás</h2>
+    <p>A <strong>pedikűr szolgáltatásunk</strong> szintén nagy népszerűségnek örvend, amely a lábak ápolására és felfrissítésére specializálódott. Pedikűrös szakembereink nemcsak a láb körmeit formázzák, hanem a bőrkeményedéseket és egyéb bőrproblémákat is kezelik. A kényeztető lábmasszázs és a hidratáló kezelések révén vendégeink nemcsak szép, hanem egészséges lábakkal távozhatnak.</p>
+
+    <h2>Fodrászat</h2>
+    <p>Fodrászatunkban a <strong>legújabb frizura trendek</strong> és technikák várják vendégeinket. Fodrászaink széleskörű tapasztalattal rendelkeznek, és személyre szabott tanácsokkal segítik a vendégeket a legmegfelelőbb frizura kiválasztásában. Legyen szó egyszerű vágásról, színezésről vagy különleges alkalmakra való frizuráról, a vendégek biztosak lehetnek abban, hogy a legjobb kezekben vannak.</p>
+
+    <p>Szépségszalonunk nemcsak a testi szépségre, hanem a <strong>belső harmóniára</strong> is fókuszál. Minden kezelés során arra törekszünk, hogy vendégeink egy valódi feltöltődést és relaxációt éljenek át. <strong>Barátságos környezet, szakképzett személyzet</strong> és kiváló szolgáltatások várják Önt. Látogasson el hozzánk, és tapasztalja meg a szépség világát, ahol mindenki megtalálhatja a számára legideálisabb kezelést!</p>
           </span>
       </div>
     );

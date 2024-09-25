@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../../AxiosInterceptor';
 
 function RegistrationPage() {
     const [formData, setFormData] = useState({
         name: '',
-        username: '',
+        userName: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
         password: '',
         repassword: ''
     });
+
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -18,20 +21,31 @@ function RegistrationPage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('FormData:', formData);
+        setSuccessMessage('');  // Üzenetek törlése a submit elején
+        setErrorMessage('');
+
+        if (formData.password !== formData.repassword) {
+            setErrorMessage('A jelszavak nem egyeznek');
+            return;
+        }
+
         try {
-            const response = await axios.post('http://localhost:8080/api/users/register', formData, {
-                auth: {
-                    username: 'admin', // Felhasználónév
-                    password: 'almafa' // Jelszó
-                },
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log(response.data);
+            const response = await axiosInstance.post('/users/register', formData);
+            setSuccessMessage("Sikeres regisztráció");
+            setFormData({
+                name: '',
+                userName: '',
+                email: '',
+                phoneNumber: '',
+                password: '',
+                repassword: ''
+            }); // Űrlap ürítése
         } catch (error) {
-            console.error('Error:', error);
+            if (error.response && error.response.data) {
+                setErrorMessage(error.response.data.message); // A backend hibaüzenetének megjelenítése
+            } else {
+                setErrorMessage('Sikertelen regisztráció. Kérjük, próbálja újra!');
+            }
         }
     };
 
@@ -40,6 +54,9 @@ function RegistrationPage() {
             <div className="row justify-content-center">
                 <div className="col-sm-10 col-md-8 col-lg-6">
                     <form onSubmit={handleSubmit} method="POST">
+                        {/* Hibaüzenet megjelenítése */}
+                        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+
                         <label>
                             Név: <br />
                             <input
@@ -102,6 +119,8 @@ function RegistrationPage() {
                         <br />
                         <button type="submit">Regisztráció</button>
                     </form>
+                    {/* Sikeres regisztráció üzenet megjelenítése */}
+                    {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                 </div>
             </div>
         </div>

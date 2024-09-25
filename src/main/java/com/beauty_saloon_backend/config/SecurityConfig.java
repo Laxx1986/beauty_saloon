@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/authenticate", "/api/users/register").permitAll()
+                        .requestMatchers("/api/contact/**").permitAll()
                         .requestMatchers("/", "/index.html", "/Static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/home", "/services", "/prices", "/about", "/contact").permitAll()
                         .requestMatchers("/api/users/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
@@ -54,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/bookings/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/bookings/create").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/services/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
-                        .requestMatchers("/api//bookings/service-provider/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/bookings/service-provider/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -89,4 +90,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception{
         return authConfig.getAuthenticationManager();
     }
+
+
 }

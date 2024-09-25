@@ -1,6 +1,8 @@
 package com.beauty_saloon_backend.controller;
 
+import com.beauty_saloon_backend.dto.ServiceDetailsDTO;
 import com.beauty_saloon_backend.model.SaloonService;
+import com.beauty_saloon_backend.repository.SaloonServiceRepository;
 import com.beauty_saloon_backend.service.SaloonServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/services")
 public class SaloonServiceController {
     private final SaloonServiceService saloonServiceService;
+    private final SaloonServiceRepository saloonServiceRepository;
 
     @Autowired
-    public SaloonServiceController(SaloonServiceService saloonServiceService) {
+    public SaloonServiceController(SaloonServiceService saloonServiceService, SaloonServiceRepository saloonServiceRepository) {
         this.saloonServiceService = saloonServiceService;
+        this.saloonServiceRepository = saloonServiceRepository;
     }
 
     @GetMapping("/all-service")
@@ -47,4 +51,11 @@ public class SaloonServiceController {
             return serviceObject;
         }
     }
+
+    @GetMapping("/all-service-with-names")
+    public ResponseEntity<List<ServiceDetailsDTO>> getAllServiceDetails() {
+        List<ServiceDetailsDTO> services = saloonServiceRepository.findAllServiceDetailsWithNames();
+        return ResponseEntity.ok(services);
+    }
+
 }
