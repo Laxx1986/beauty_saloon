@@ -19,8 +19,11 @@ public class BookingConverter {
         dto.setTime(booking.getTime());
         dto.setComment(booking.getComment());
         dto.setServiceProviderID(booking.getServiceProviderID());
+        dto.setConfirmed(booking.isConfirmed());
+        dto.setServiceName(booking.getSaloonService().getServiceName());
         return dto;
     }
+
 
     public Booking toEntity(BookingDTO bookingDTO, SaloonService saloonService, OpeningTime openingTime, User user) {
         Booking booking = new Booking();
@@ -31,6 +34,7 @@ public class BookingConverter {
         booking.setComment(bookingDTO.getComment());
         booking.setServiceProviderID(bookingDTO.getServiceProviderID());
         booking.setUser(user); // Ez a sor hozzáadja a User objektumot a Booking-hez
+        booking.setConfirmed(bookingDTO.isConfirmed());
         return booking;
     }
 }

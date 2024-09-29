@@ -16,7 +16,7 @@ function MyCalendar() {
         axiosInstance.get('/bookings/all-booking')
             .then(response => {
                 const bookings = response.data.map(booking => {
-                    const [id, date, time, comment, userName, serviceProviderName, serviceName, serviceLength] = booking;
+                    const [id, date, time, comment, name, serviceProviderName, serviceName, serviceLength] = booking;
                     const startDate = new Date(date);
                     const [hours, minutes, seconds] = time.split(':');
                     startDate.setHours(hours);
@@ -28,10 +28,10 @@ function MyCalendar() {
 
                     return {
                         id,
-                        title: `${serviceProviderName} - ${serviceName} - ${comment}`,
+                        title: `${serviceProviderName} - ${serviceName} - ${comment} (Foglalta: ${name})`,
                         start: startDate,
                         end: endDate,
-                        userName,
+                        name,
                         serviceProviderName,
                         serviceName,
                         comment,

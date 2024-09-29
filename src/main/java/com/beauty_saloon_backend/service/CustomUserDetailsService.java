@@ -31,4 +31,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("Blabla: " + authorities);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
     }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findByUserName(username);
+    }
 }

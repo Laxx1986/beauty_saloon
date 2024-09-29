@@ -11,6 +11,7 @@ function BookingForm() {
     const [time, setTime] = useState('');
     const [comment, setComment] = useState('');
     const [feedback, setFeedback] = useState('');
+    const userId = localStorage.getItem('userId');
 
 
     useEffect(() => {
@@ -49,7 +50,7 @@ function BookingForm() {
         }
 
         const bookingRequest = {
-            userId: getUserId(),
+            userId: userId,
             serviceProviderID: selectedServiceProvider,
             serviceId: selectedService,
             date,
@@ -57,6 +58,7 @@ function BookingForm() {
             comment
         };
 
+        console.log('Booking Request:', bookingRequest);
 
         axiosInstance.post('/bookings/create', bookingRequest)
             .then(response => alert(response.data))

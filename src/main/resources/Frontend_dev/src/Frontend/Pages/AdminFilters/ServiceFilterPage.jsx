@@ -12,7 +12,7 @@ function ServiceFilterPage() {
             .then(response => {
                 // Group services by provider's name and type
                 const grouped = response.data.reduce((acc, service) => {
-                    const providerKey = `${service.serviceProvider} - ${service.serviceType}`; // Combine provider name and service type
+                    const providerKey = `${service.serviceProvider}`;
                     if (!acc[providerKey]) {
                         acc[providerKey] = [];
                     }

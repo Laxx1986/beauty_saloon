@@ -1,6 +1,5 @@
 package com.beauty_saloon_backend.controller;
 
-import com.beauty_saloon_backend.dto.ServiceDetailsDTO;
 import com.beauty_saloon_backend.model.SaloonService;
 import com.beauty_saloon_backend.repository.SaloonServiceRepository;
 import com.beauty_saloon_backend.service.SaloonServiceService;
@@ -48,13 +47,13 @@ public class SaloonServiceController {
 
             return serviceResponse;
         } else {
-            return serviceObject;
+             return serviceObject;
         }
     }
 
     @GetMapping("/all-service-with-names")
-    public ResponseEntity<List<ServiceDetailsDTO>> getAllServiceDetails() {
-        List<ServiceDetailsDTO> services = saloonServiceRepository.findAllServiceDetailsWithNames();
+    public ResponseEntity<List<Object>> getAllServiceDetails() {
+        List<Object> services = saloonServiceService.getAllServiceDetailsWithNames();
         return ResponseEntity.ok(services);
     }
 

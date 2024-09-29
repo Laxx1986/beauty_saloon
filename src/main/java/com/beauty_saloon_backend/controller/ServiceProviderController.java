@@ -6,12 +6,14 @@ import com.beauty_saloon_backend.service.ServiceProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,5 +54,15 @@ public class ServiceProviderController {
     public ResponseEntity<List<ServiceProviderWithUserDTO>> findAllServiceProvidersWithUsers() {
         List<ServiceProviderWithUserDTO> serviceProviderDetails = serviceProviderService.getAllServiceProvidersWithUsers();
         return ResponseEntity.ok(serviceProviderDetails);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getServiceProviderByUserId(@PathVariable UUID userId) {
+        ServiceProvider serviceProvider = serviceProviderService.findByUser_UserId(userId);
+        if (serviceProvider != null) {
+            return ResponseEntity.ok(serviceProvider.getServiceProviderId());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

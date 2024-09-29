@@ -63,4 +63,28 @@ public class EmailService {
             throw ex;
         }
     }
+
+    public void sendRegistrationEmail(String recipientEmail, String name) throws IOException {
+        Email from = new Email("kapcsolat@innovweb.hu");
+        String subject = "Sikeres regisztráció!";
+        Email to = new Email(recipientEmail);
+        Content content = new Content("text/plain",
+                "Kedves " + name + ",\n\n" +
+                        "Köszönjük, hogy a regisztrációdat.\n\n" +
+                        "Most már be tudsz jelentkezni az oldalra.\n\n" +
+                        "Üdvözlettel:\nBeauty Szépségszalon\n");
+
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid(sendGridApiKey);
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            sg.api(request);
+        } catch (IOException ex) {
+            throw ex;
+        }
+    }
 }

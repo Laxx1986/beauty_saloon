@@ -30,18 +30,12 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JoinTable(
-            name = "connect_booking_to_service_provider",
-            joinColumns = @JoinColumn(name = "serviceProviderId"),
-            inverseJoinColumns = @JoinColumn(name = "serviceProviderIdInverse")
-    )
-    private Set<ServiceProvider> serviceProvider;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "serviceProvider_id")
+    private ServiceProvider serviceProvider;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "service_id")
@@ -58,5 +52,6 @@ public class Booking {
 
     private UUID serviceProviderID;
 
-
+    @Column(name = "confirmed", columnDefinition = "boolean default false")
+    private boolean confirmed = false;
 }

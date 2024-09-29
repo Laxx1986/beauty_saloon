@@ -23,7 +23,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findByServiceProviderAndDateAndTime(@Param("serviceProviderId") UUID serviceProviderId, @Param("date") LocalDate date, @Param("time") LocalTime time);
 
     @Query("SELECT b.bookingId, b.date, b.time, b.comment, " +
-            "u.userName, " +
+            "u.name, " +
             "sp.serviceProviderName, " +
             "ss.serviceName, " +
             "sl.serviceLength " +
@@ -36,4 +36,8 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
     @Query("SELECT ot FROM OpeningTime ot WHERE ot.serviceProvider.serviceProviderId = :serviceProviderId AND ot.date = :dayOfWeek")
     Optional<OpeningTime> findByServiceProviderAndDayOfWeek(@Param("serviceProviderId") UUID serviceProviderId, @Param("dayOfWeek") LocalDate dayOfWeek);
+
+    List<Booking> findAllByUser_UserId(UUID userId);
+    List<Booking> findByServiceProviderID(UUID serviceProviderID);
+
 }

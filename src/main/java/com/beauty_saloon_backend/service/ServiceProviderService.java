@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -50,5 +51,9 @@ public class ServiceProviderService {
         return serviceProviders.stream()
                 .map(serviceProviderWithUserConverter::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public ServiceProvider findByUser_UserId(UUID userId) {
+        return serviceProviderRepository.findByUser_UserId(userId);
     }
 }

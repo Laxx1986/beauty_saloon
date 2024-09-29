@@ -23,9 +23,10 @@ public class BookingDTO {
     private UUID serviceId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(pattern = "HH:mm[:ss]")
     private LocalTime time;
     private String comment;
     private UUID serviceProviderID;
-
+    private boolean confirmed = false;
+    private String serviceName;
 }

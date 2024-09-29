@@ -15,8 +15,10 @@ import java.util.UUID;
 public interface ServiceProviderRepository extends JpaRepository<ServiceProvider, UUID> {
     ServiceProvider findByServiceProviderName(String serviceProviderName);
 
-    @Query("SELECT sp.serviceProviderId, sp.serviceProviderName, u.userName FROM ServiceProvider sp INNER JOIN User u ON sp.User.userId = u.userId")
+    @Query("SELECT sp.serviceProviderId, sp.serviceProviderName, u.userName FROM ServiceProvider sp INNER JOIN User u ON sp.user.userId = u.userId")
     List<Object[]> findServiceProviderAndUserDetails();
+
+    ServiceProvider findByUser_UserId(UUID userId);
 }
 
 

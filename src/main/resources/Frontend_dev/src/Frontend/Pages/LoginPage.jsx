@@ -14,16 +14,26 @@ function LoginPage({ setIsLoggedIn, setUserName, setUserRights }) {
             .then(response => {
                 const token = response.data.jwt;
                 const userRights = response.data.userRights;
+                const userId = response.data.userId;
 
                 localStorage.setItem('token', token);
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userName', username);
                 localStorage.setItem('userRights', JSON.stringify(userRights));
-
+                localStorage.setItem('userId', userId);
                 setIsLoggedIn(true);
                 setUserName(username);
                 setUserRights(userRights);
 
+                // Now fetch service provider ID based on userId
+                return axiosInstance.get(`serviceProviders/user/${userId}`);
+            })
+            .then(serviceProviderResponse => {
+                if (serviceProviderResponse.status === 200) {
+                    const serviceProviderId = serviceProviderResponse.data;
+                    localStorage.setItem('serviceProviderId', serviceProviderId);
+                    console.log(serviceProviderId);
+                }
                 navigate('/');
             })
             .catch(error => {
@@ -62,3 +72,4 @@ function LoginPage({ setIsLoggedIn, setUserName, setUserRights }) {
 }
 
 export default LoginPage;
+

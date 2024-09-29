@@ -4,8 +4,10 @@ import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.converter.UserConverter;
 import com.beauty_saloon_backend.exceptions.EmailAlreadyExistsException;
 import com.beauty_saloon_backend.exceptions.UsernameAlreadyExistsException;
+import com.beauty_saloon_backend.model.Booking;
 import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.model.UserRights;
+import com.beauty_saloon_backend.repository.BookingRepository;
 import com.beauty_saloon_backend.repository.UserRepository;
 import com.beauty_saloon_backend.repository.UserRightsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,11 @@ public class UserService {
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
     private final UserRightsRepository userRightsRepository;
+    private final UUID defaultUserId = UUID.fromString("1c0b3137-a66b-49b8-b3fa-7934824c2224");
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
 
     @Autowired
     public UserService(UserRepository userRepository, UserConverter userConverter, PasswordEncoder passwordEncoder, UserRightsRepository userRightsRepository) {
@@ -76,9 +83,36 @@ public class UserService {
     }
 
     public void deleteUser(UUID userId) {
-        if(!userRepository.existsById(userId)){
+        if(!userRepository.existsById(userId)) {
             throw new RuntimeException("User not found");
         }
+
+        User defaultUser = userRepository.findById(defaultUserId)
+                .orElseThrow(() -> new RuntimeException("Default user not found"));
+
+        List<Booking> bookings = bookingRepository.findAllByUser_UserId(userId);
+        for (Booking booking : bookings) {
+            booking.setUser(defaultUser);
+        }
+        bookingRepository.saveAll(bookings);
+
+        // Töröljük a felhasználót
         userRepository.deleteById(userId);
     }
+
+    public void updateUser(UUID userId, User updatedUser) {
+        User existingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+
+        // Csak akkor frissítjük a jelszót, ha az meg van adva
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        userRepository.save(existingUser);
+    }
+
 }

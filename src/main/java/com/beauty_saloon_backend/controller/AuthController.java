@@ -2,6 +2,7 @@ package com.beauty_saloon_backend.controller;
 
 import com.beauty_saloon_backend.model.AuthenticationRequest;
 import com.beauty_saloon_backend.model.AuthenticationResponse;
+import com.beauty_saloon_backend.model.User;
 import com.beauty_saloon_backend.service.CustomUserDetailsService;
 import com.beauty_saloon_backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,15 @@ public class AuthController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
 
+        User user = userDetailsService.findUserByUsername(authRequest.getUsername());
+
+
         // Kinyerjük a granted authorities-t
         String userRights = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
                 .orElse(null); // Vagy kezelj le más logikát
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userRights));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userRights, user.getUserId()));
     }
 }

@@ -34,7 +34,7 @@ public class ServiceProvider {
     private List<SaloonService> saloonServices;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User User;
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    private User user;
 
 }

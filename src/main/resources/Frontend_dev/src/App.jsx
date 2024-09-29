@@ -14,6 +14,7 @@ import RegistrationPage from "./Frontend/Pages/RegistrationPage";
 import UserFilterPage from "./Frontend/Pages/AdminFilters/UserFilterPage";
 import ServiceProviderFilterPage from "./Frontend/Pages/AdminFilters/ServiceProviderFilterPage";
 import ServiceLengthFilterPage from "./Frontend/Pages/AdminFilters/ServiceLengthFilterPage";
+import BookingTableFilter from "./Frontend/Pages/AdminFilters/BookingTableFilter";
 import ServiceFilterPage from "./Frontend/Pages/AdminFilters/ServiceFilterPage";
 import OpeningTimeFilterPage from "./Frontend/Pages/AdminFilters/OpeningTimeFilterPage";
 import MyCalendar from "./Frontend/Pages/MyCalendar";
@@ -105,6 +106,7 @@ function App() {
                     <Route path="/servicefilter" element={<ServiceFilterPage />} />
                     <Route path="/openingtimefilter" element={<OpeningTimeFilterPage />} />
                     <Route path="/bookingfilter" element={<MyCalendar key="booking-calendar" />} />
+                    <Route path="/bookingtablefilter" element={<BookingTableFilter/>} />
                   </>
               )}
               <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} setUserRights={setUserRights} />} />

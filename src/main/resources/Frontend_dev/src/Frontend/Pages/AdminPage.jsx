@@ -23,6 +23,7 @@ function AdminPage() {
                                         <Dropdown.Item href="/servicefilter">Szolgáltatások</Dropdown.Item>
                                         <Dropdown.Item href="/openingtimefilter">Nyitvatartás</Dropdown.Item>
                                         <Dropdown.Item href="/bookingfilter">Foglalások</Dropdown.Item>
+                                        <Dropdown.Item href="/bookingtablefilter">Foglalások táblázat</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </li>

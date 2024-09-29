@@ -1,0 +1,71 @@
+.confirm-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Táblázat stílusozása */
+table {
+    width: 100%;
+    border-collapse: collapse; /* A belső keretek összevonása */
+    border: 2px solid #000; /* Külső keret */
+    margin: 20px 0;
+}
+
+/* Táblázat cellák belső kerete */
+table th, table td {
+    border: 1px solid #000; /* Belső keret */
+    padding: 10px;
+    text-align: left;
+}
+
+/* Fejléc stílus */
+table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Sorok váltakozó színei */
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

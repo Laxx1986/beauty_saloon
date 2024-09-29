@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/serviceLengths/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/openingTimes/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/bookings/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
+                        .requestMatchers("/api/bookings/update/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/bookings/create").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/services/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
                         .requestMatchers("/api/bookings/service-provider/**").hasAnyAuthority("Admin", "Szolgaltato", "Recepcios")
