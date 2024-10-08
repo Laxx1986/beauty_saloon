@@ -98,7 +98,7 @@ function UserFilterPage() {
                                             className="btn btn-primary"
                                             onClick={() => openModal(user)}
                                         >
-                                            Update
+                                            Módosítás
                                         </button>
                                         {user.userRights.userRightsName !== 'Recepcios' && user.userRights.userRightsName !== 'Szolgaltato' && (
                                             <button

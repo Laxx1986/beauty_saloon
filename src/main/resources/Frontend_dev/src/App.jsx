@@ -19,11 +19,15 @@ import ServiceFilterPage from "./Frontend/Pages/AdminFilters/ServiceFilterPage";
 import OpeningTimeFilterPage from "./Frontend/Pages/AdminFilters/OpeningTimeFilterPage";
 import MyCalendar from "./Frontend/Pages/MyCalendar";
 import LoginPage from "./Frontend/Pages/LoginPage";
+import BookingTablePageForUsers from "./Frontend/Pages/BookingTablePageForUsers";
+import UpdateUserModal from "./Frontend/Pages/AdminFilters/UpdateUserModal";
+import StatisticsPage from "./Frontend/Pages/AdminFilters/StatisticsPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [userRights, setUserRights] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Állapot a modál nyitásához
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,11 +42,11 @@ function App() {
 
       if (storedUserRights) {
         try {
-          const parsedRights = JSON.parse(storedUserRights); // Parse only if it exists
+          const parsedRights = JSON.parse(storedUserRights);
           setUserRights(parsedRights);
         } catch (error) {
           console.error("Error parsing userRights from localStorage:", error);
-          setUserRights(null); // Handle parsing error
+          setUserRights(null);
         }
       }
     }
@@ -57,6 +61,14 @@ function App() {
     localStorage.removeItem('userName');
     localStorage.removeItem('userRights');
     navigate('/login');
+  };
+
+  const openUpdateUserModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeUpdateUserModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -80,7 +92,7 @@ function App() {
         </div>
         <div className="row" id="needbackground">
           <div className="col-12">
-            <Menu login={isLoggedIn} userRights={userRights} />
+            <Menu login={isLoggedIn} userRights={userRights} openUpdateUserModal={openUpdateUserModal} />
           </div>
         </div>
         <div className="row" id="needbackground">
@@ -97,6 +109,9 @@ function App() {
               {userRights === 'User' && (
                   <Route path="/Bookings" element={<MyCalendar />} />
               )}
+              {userRights === 'User' && (
+                  <Route path="/BookingTablePageForUsers" element={<BookingTablePageForUsers />} />
+              )}
               {!isLoggedIn && <Route path="/registration" element={<RegistrationPage />} />}
               {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
                   <>
@@ -107,12 +122,25 @@ function App() {
                     <Route path="/openingtimefilter" element={<OpeningTimeFilterPage />} />
                     <Route path="/bookingfilter" element={<MyCalendar key="booking-calendar" />} />
                     <Route path="/bookingtablefilter" element={<BookingTableFilter/>} />
+                    <Route path="/statistics" element={<StatisticsPage />} />
+
                   </>
               )}
               <Route path="/login" element={<LoginPage setIsLoggedIn={setIsLoggedIn} setUserName={setUserName} setUserRights={setUserRights} />} />
             </Routes>
           </div>
         </div>
+
+        {/* Modal */}
+        {isModalOpen && (
+            <UpdateUserModal
+                isOpen={isModalOpen}
+                onClose={closeUpdateUserModal}
+                userId={localStorage.getItem('userId')}
+                userName={userName}
+                initialData={{}} // Add necessary initial data if needed
+            />
+        )}
       </>
   );
 }

@@ -5,9 +5,7 @@ import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.model.ServiceLength;
 import com.beauty_saloon_backend.service.ServiceLengthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +19,13 @@ public class ServiceLengthController {
         this.serviceLengthService = serviceLengthService;
     }
 
-    @GetMapping
+    @GetMapping ("/getlengths")
     public List<ServiceLengthDTO> getAllServiceLengths() {
         return serviceLengthService.getAllServiceLengths();
+    }
+
+    @PostMapping("/add")
+    public ServiceLengthDTO addServiceLength(@RequestBody ServiceLengthDTO serviceLengthDTO) {
+        return serviceLengthService.addServiceLength(serviceLengthDTO);
     }
 }

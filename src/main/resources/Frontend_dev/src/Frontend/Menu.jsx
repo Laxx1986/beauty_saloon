@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Menu({ login, userRights }) {
+function Menu({ login, userRights, openUpdateUserModal }) {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid justify-content-center">
@@ -26,11 +26,28 @@ function Menu({ login, userRights }) {
                                 <Link className="nav-link" to="/admin">Admin</Link>
                             </li>
                         )}
-                        {userRights === 'User' && (
+                        {userRights && (userRights === 'Recepcios' || userRights === 'Szolgaltato') && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/Bookings">Foglalások</Link>
+                                <Link className="nav-link" to="/statistics">Statisztika</Link>
                             </li>
                         )}
+                        {userRights === 'User' && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/Bookings">Új foglalás</Link>
+                            </li>
+                        )}
+                        {userRights === 'User' && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/BookingTablePageForUsers">Foglalások táblázat</Link>
+                            </li>
+                        )}
+
+                        {userRights === 'User' && (
+                            <li className="nav-item">
+                                <button className="nav-link btn btn-link" onClick={openUpdateUserModal}>Felhasználói adat módosítása</button>
+                            </li>
+                        )}
+
                         {!login && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/registration">Regisztráció</Link>

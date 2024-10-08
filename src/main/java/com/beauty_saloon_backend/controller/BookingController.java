@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,8 +31,8 @@ public class BookingController {
     }
 
     @GetMapping("/all-booking")
-    public ResponseEntity<List<Object[]>> findAllBooking() {
-        List<Object[]> bookingDTOs = bookingService.findAllBooking();
+    public ResponseEntity<List<BookingDTO>> findAllBooking() {
+        List<BookingDTO> bookingDTOs = bookingService.getAllBookings();
         return ResponseEntity.ok(bookingDTOs);
     }
 
@@ -50,6 +51,19 @@ public class BookingController {
     @GetMapping("/service-provider2/{serviceProviderId}")
     public ResponseEntity<List<BookingDTO>> getBookingsForServiceProvider(@PathVariable UUID serviceProviderId) {
         return ResponseEntity.ok(bookingService.getBookingsForServiceProvider(serviceProviderId));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<BookingDTO>> getAllBookings() {
+        return ResponseEntity.ok(bookingService.getAllBookings());
+    }
+
+    @GetMapping("/service-provider/{serviceProviderId}/bookings-on-date")
+    public ResponseEntity<List<BookingDTO>> getBookingsByServiceProviderAndDate(
+            @PathVariable UUID serviceProviderId,
+            @RequestParam LocalDate date) {
+        List<BookingDTO> bookings = bookingService.getBookingsByServiceProviderAndDate(serviceProviderId, date);
+        return ResponseEntity.ok(bookings);
     }
 
     @PutMapping("/confirm/{bookingId}")
@@ -80,6 +94,7 @@ public class BookingController {
         }
     }
 
+
     @GetMapping("/{bookingId}")
     public ResponseEntity<Booking> getBooking(@PathVariable UUID bookingId) {
         Booking booking = bookingService.getBookingById(bookingId);
@@ -89,4 +104,17 @@ public class BookingController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/service-provider/{serviceProviderId}/booked-dates")
+    public ResponseEntity<List<LocalDate>> getBookedDates(@PathVariable UUID serviceProviderId) {
+        List<LocalDate> bookedDates = bookingService.getBookedDatesByServiceProvider(serviceProviderId);
+        return ResponseEntity.ok(bookedDates);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<BookingDTO>> getBookingsForUser(@PathVariable UUID userId) {
+        List<BookingDTO> userBookings = bookingService.getBookingsForUser(userId);
+        return ResponseEntity.ok(userBookings);
+    }
+
 }

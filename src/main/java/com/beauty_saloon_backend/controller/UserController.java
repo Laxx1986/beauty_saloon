@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -85,5 +86,35 @@ public class UserController {
     @PutMapping("/update/{userId}")
     public void updateUser(@PathVariable UUID userId, @RequestBody User updatedUser) {
         userService.updateUser(userId, updatedUser);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser() {
+        Optional<User> currentUser = userService.getCurrentUser();
+
+        if (currentUser.isPresent()) {
+            User user = currentUser.get();
+            // Create a DTO to avoid exposing sensitive information
+            UserDTO userDTO = new UserDTO(
+                    user.getUserId(),
+                    user.getUsername(),
+                    user.getName(),
+                    user.getEmail(),
+                    user.getUserRights().getUserRightsName()
+            );
+            return ResponseEntity.ok(userDTO);
+        } else {
+            return ResponseEntity.status(404).body("User not found");
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID userId) {
+        UserDTO userDTO = userService.getUserById(userId);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 }

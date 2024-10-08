@@ -25,20 +25,26 @@ function LoginPage({ setIsLoggedIn, setUserName, setUserRights }) {
                 setUserName(username);
                 setUserRights(userRights);
 
-                // Now fetch service provider ID based on userId
-                return axiosInstance.get(`serviceProviders/user/${userId}`);
+                // Kérjük le a serviceProviderId-t az userId alapján
+                return axiosInstance.get(`/serviceProviders/user/${userId}`);
             })
             .then(serviceProviderResponse => {
                 if (serviceProviderResponse.status === 200) {
                     const serviceProviderId = serviceProviderResponse.data;
                     localStorage.setItem('serviceProviderId', serviceProviderId);
-                    console.log(serviceProviderId);
+                    console.log("Service Provider ID: ", serviceProviderId);
                 }
                 navigate('/');
             })
             .catch(error => {
-                console.error('Login error:', error);
-                setError('Hibás felhasználónév vagy jelszó');
+                // Ha nincs serviceProvider, folytassuk hibaüzenet nélkül
+                if (error.response && error.response.status === 404) {
+                    console.log("Ez a felhasználó nem szolgáltató.");
+                    navigate('/');
+                } else {
+                    console.error('Login error:', error);
+                    setError('Hibás felhasználónév vagy jelszó');
+                }
             });
     };
 
@@ -72,4 +78,3 @@ function LoginPage({ setIsLoggedIn, setUserName, setUserRights }) {
 }
 
 export default LoginPage;
-

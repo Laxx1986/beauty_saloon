@@ -79,24 +79,24 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() {
-        return true; // Szükség szerint módosítható
+        return true;
     }
 
     @Override
     @JsonIgnore
     public boolean isAccountNonLocked() {
-        return true; // Szükség szerint módosítható
+        return true;
     }
 
     @Override
     @JsonIgnore
     public boolean isCredentialsNonExpired() {
-        return true; // Szükség szerint módosítható
+        return true;
     }
 
     @Override
     @JsonIgnore
     public boolean isEnabled() {
-        return true; // Szükség szerint módosítható
+        return true;
     }
 }

@@ -29,4 +29,12 @@ public class ServiceLengthService {
                 .collect(Collectors.toList());
     }
 
+    public ServiceLengthDTO addServiceLength(ServiceLengthDTO serviceLengthDTO) {
+        ServiceLength serviceLength = new ServiceLength();
+        serviceLength.setServiceLength(serviceLengthDTO.getServiceLength());
+        ServiceLength savedServiceLength = serviceLengthRepository.save(serviceLength);
+        return serviceLengthConverter.toDto(savedServiceLength);
+    }
+
+
 }

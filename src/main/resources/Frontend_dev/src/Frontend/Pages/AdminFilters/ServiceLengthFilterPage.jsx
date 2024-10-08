@@ -1,17 +1,24 @@
-import {Link} from "react-router-dom";
-import React, {useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "./Tables.css";
 import axiosInstance from "../../../AxiosInterceptor";
 
-function ServiceLengthFilterPage(){
+function ServiceLengthFilterPage() {
     const [serviceLengths, setServiceLengths] = useState([]);
     const [feedback, setFeedback] = useState('');
+    const [newServiceLength, setNewServiceLength] = useState('');
 
-    useEffect( () => {
-        axiosInstance.get('/serviceLengths') .then(response => {
-            setServiceLengths(response.data);
+    useEffect(() => {
+        fetchServiceLengths();
+    }, []);
 
-        })
+    // Adatok lekérése a backendből
+    const fetchServiceLengths = () => {
+        axiosInstance.get('/serviceLengths/getlengths')
+            .then(response => {
+                setServiceLengths(response.data);
+                setFeedback(''); // Töröljük a hibaüzenetet
+            })
             .catch(error => {
                 console.error('Error fetching data:', error);
                 if (error.response && error.response.status === 403) {
@@ -20,7 +27,32 @@ function ServiceLengthFilterPage(){
                     setFeedback('Hiba történt az adatok lekérésekor.');
                 }
             });
-    }, []);
+    };
+
+    // Új szolgáltatás hossz hozzáadása
+    const handleAddServiceLength = (e) => {
+        e.preventDefault();
+
+        if (!newServiceLength) {
+            setFeedback('Kérjük, adja meg a szolgáltatás hosszát!');
+            return;
+        }
+
+        const serviceLengthDTO = {
+            serviceLength: parseInt(newServiceLength),
+        };
+
+        axiosInstance.post('/serviceLengths/add', serviceLengthDTO)
+            .then(response => {
+                setFeedback('Szolgáltatás hossz sikeresen hozzáadva.');
+                setNewServiceLength(''); // Töröljük a bemeneti mezőt
+                fetchServiceLengths(); // Frissítjük a listát
+            })
+            .catch(error => {
+                console.error('Error adding service length:', error);
+                setFeedback('Hiba történt a szolgáltatás hossz hozzáadásakor.');
+            });
+    };
 
     return (
         <>
@@ -56,6 +88,27 @@ function ServiceLengthFilterPage(){
                         </table>
                     </div>
                 </div>
+
+                {/* Új szolgáltatás hossz hozzáadása */}
+                <div className="row">
+                    <div className="col">
+                        <h2>Új szolgáltatás hossz hozzáadása</h2>
+                        <form onSubmit={handleAddServiceLength}>
+                            <div>
+                                <label>Szolgáltatás hossz (perc):</label>
+                                <input
+                                    type="number"
+                                    value={newServiceLength}
+                                    onChange={(e) => setNewServiceLength(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit">Hozzáadás</button>
+                        </form>
+                        {feedback && <p>{feedback}</p>}
+                    </div>
+                </div>
+
                 <div className="row">
                     <div className="col">
                         <Link to="/admin">
@@ -65,7 +118,7 @@ function ServiceLengthFilterPage(){
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default ServiceLengthFilterPage;

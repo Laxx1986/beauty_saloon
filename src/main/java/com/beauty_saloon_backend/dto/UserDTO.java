@@ -16,6 +16,7 @@ import java.util.UUID;
 public class UserDTO {
     private UUID userId;
     private String userName;
+    private String role;
 
     private String name;
     private String email;
@@ -24,5 +25,13 @@ public class UserDTO {
     private String password;
     private UserRights userRights;
 
-    private boolean loggedIn;
+    private boolean loggedIn = false;
+
+    public UserDTO(UUID userId, String username, String name, String email, String role) {
+        this.userId = userId;
+        this.userName = username;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+    }
 }

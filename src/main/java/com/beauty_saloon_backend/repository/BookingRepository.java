@@ -16,6 +16,9 @@ import java.util.UUID;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, UUID> {
 
+    List<Booking> findByServiceProvider_ServiceProviderIdAndDate(UUID serviceProviderId, LocalDate date);
+
+
     @Query("SELECT b FROM Booking b WHERE b.saloonService.serviceProvider.serviceProviderId = :serviceProviderId AND b.date = :date")
     List<Booking> findByServiceProviderAndDate(@Param("serviceProviderId") UUID serviceProviderId, @Param("date") LocalDate date);
 
@@ -38,6 +41,11 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     Optional<OpeningTime> findByServiceProviderAndDayOfWeek(@Param("serviceProviderId") UUID serviceProviderId, @Param("dayOfWeek") LocalDate dayOfWeek);
 
     List<Booking> findAllByUser_UserId(UUID userId);
-    List<Booking> findByServiceProviderID(UUID serviceProviderID);
+    List<Booking> findByServiceProvider_ServiceProviderId(UUID serviceProviderId);
+
+    @Query("SELECT b FROM Booking b WHERE YEAR(b.date) = :year AND MONTH(b.date) = :month")
+    List<Booking> findByYearAndMonth(@Param("year") int year, @Param("month") int month);
+
+
 
 }

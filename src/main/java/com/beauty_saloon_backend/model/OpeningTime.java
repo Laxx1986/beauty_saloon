@@ -40,6 +40,6 @@ public class OpeningTime {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "service_provider_id")
+    @JoinColumn(name = "service_provider_id", referencedColumnName = "serviceProviderId")
     private ServiceProvider serviceProvider;
 }

@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import axiosInstance from '../../../AxiosInterceptor';
 import './Tables.css';
 
-Modal.setAppElement('#root'); // Állítsuk be a root elemet
+Modal.setAppElement('#root');
 
 function UpdateUserModal({ isOpen, onClose, userId, userName, initialData, refreshUsers }) {
     const [name, setName] = useState(initialData.name || '');
@@ -23,13 +23,12 @@ function UpdateUserModal({ isOpen, onClose, userId, userName, initialData, refre
             name,
             email,
             phoneNumber,
-            password: password || undefined, // Csak akkor küldjük el, ha meg van adva
+            password: password || undefined,
         };
 
         axiosInstance.put(`/users/update/${userId}`, updatedUser)
             .then(() => {
                 setFeedback('A felhasználó adatai frissítve lettek.');
-                refreshUsers(); // Frissítjük a felhasználói listát
                 onClose(); // Zárjuk be a modális ablakot
             })
             .catch(error => {

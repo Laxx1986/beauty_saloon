@@ -11,11 +11,13 @@ import com.beauty_saloon_backend.repository.BookingRepository;
 import com.beauty_saloon_backend.repository.UserRepository;
 import com.beauty_saloon_backend.repository.UserRightsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,7 @@ public class UserService {
     private final UserConverter userConverter;
     private final PasswordEncoder passwordEncoder;
     private final UserRightsRepository userRightsRepository;
-    private final UUID defaultUserId = UUID.fromString("1c0b3137-a66b-49b8-b3fa-7934824c2224");
+    private final UUID defaultUserId = UUID.fromString("46e6fda9-32ad-4489-b1e8-c7694164aa2c");
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -114,5 +116,8 @@ public class UserService {
 
         userRepository.save(existingUser);
     }
-
+    public Optional<User> getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return Optional.ofNullable(userRepository.findByUserName(username));
+    }
 }

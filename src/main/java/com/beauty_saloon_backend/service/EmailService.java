@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.service;
 
+import com.beauty_saloon_backend.model.Booking;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.SendGrid;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Service
 public class EmailService {
@@ -87,4 +90,53 @@ public class EmailService {
             throw ex;
         }
     }
+
+    public void sendBookingConfirmationEmail(String userEmail, Booking booking) {
+        Email from = new Email("kapcsolat@innovweb.hu");
+        String subject = "Foglalás megerősítése";
+        Email to = new Email(userEmail);
+        Content content = new Content("text/plain",
+                "Kedves " + booking.getUser().getName() + ",\n\n" +
+                        "A foglalásod a következő szolgáltatásra: " + booking.getSaloonService().getServiceName() +
+                        " sikeresen létrejött a(z) " + booking.getDate() + " dátumra és " + booking.getTime() + " időpontra.\n\n" +
+                        "Üdvözlettel,\nGeneral Beauty Salon");
+
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid(sendGridApiKey);
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            sg.api(request);
+        } catch (IOException ex) {
+            System.err.println("Hiba történt az e-mail küldése közben: " + ex.getMessage());
+        }
+    }
+
+    public void sendBookingConfirmedEmail(String recipientEmail, String name, String serviceName, LocalDate date, LocalTime time) throws IOException {
+        Email from = new Email("kapcsolat@innovweb.hu");
+        String subject = "Foglalás megerősítése";
+        Email to = new Email(recipientEmail);
+        Content content = new Content("text/plain",
+                "Kedves " + name + ",\n\n" +
+                        "A foglalásod a következő szolgáltatásra: " + serviceName +
+                        " sikeresen megerősítésre került a(z) " + date + " dátumra és " + time + " időpontra.\n\n" +
+                        "Üdvözlettel,\nGeneral Beauty Salon\n");
+
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid(sendGridApiKey);
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            sg.api(request);
+        } catch (IOException ex) {
+            throw ex;
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -23,4 +24,6 @@ public class OpeningTimeDTO {
     private UUID serviceProviderId;
     private String userName;
     private String name;
+    private List<LocalDate> selectedDates;
+
 }
