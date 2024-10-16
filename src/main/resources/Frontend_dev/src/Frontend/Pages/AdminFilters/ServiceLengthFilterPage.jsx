@@ -16,7 +16,9 @@ function ServiceLengthFilterPage() {
     const fetchServiceLengths = () => {
         axiosInstance.get('/serviceLengths/getlengths')
             .then(response => {
-                setServiceLengths(response.data);
+                // Az adatok rendezése szolgáltatás hossz szerint növekvő sorrendben
+                const sortedServiceLengths = response.data.sort((a, b) => a.serviceLength - b.serviceLength);
+                setServiceLengths(sortedServiceLengths);
                 setFeedback(''); // Töröljük a hibaüzenetet
             })
             .catch(error => {
@@ -27,6 +29,23 @@ function ServiceLengthFilterPage() {
                     setFeedback('Hiba történt az adatok lekérésekor.');
                 }
             });
+    };
+
+    const handleDeleteServiceLength = (serviceLengthId) => {
+        const confirmed = window.confirm("Biztosan törölni akarod?");
+        if (confirmed) {
+            axiosInstance.delete(`/serviceLengths/delete/${serviceLengthId}`)
+                .then(response => {
+                    alert('Sikeresen törölve.');
+                    fetchServiceLengths(); // Frissítjük a listát a törlés után
+                })
+                .catch(error => {
+                    console.error('Error deleting service length:', error);
+                    alert('A szolgáltatás időtartama nem törölhető, mert használatban van egy szolgáltatásnál!');
+                });
+        } else {
+            setFeedback('Törlés megszakítva.');
+        }
     };
 
     // Új szolgáltatás hossz hozzáadása
@@ -49,8 +68,12 @@ function ServiceLengthFilterPage() {
                 fetchServiceLengths(); // Frissítjük a listát
             })
             .catch(error => {
-                console.error('Error adding service length:', error);
-                setFeedback('Hiba történt a szolgáltatás hossz hozzáadásakor.');
+                if (error.response && error.response.status === 400) {
+                    alert('Ilyen időtartam már létezik, adjon meg mást!');
+                } else {
+                    console.error('Error adding service length:', error);
+                    setFeedback('Hiba történt a szolgáltatás hossz hozzáadásakor.');
+                }
             });
     };
 
@@ -73,15 +96,20 @@ function ServiceLengthFilterPage() {
                         <table className="table table-striped table-hover custom-table">
                             <thead>
                             <tr>
-                                <th>Szolgáltatás hossz azonosító</th>
                                 <th>Szolgáltatás hossz</th>
+                                <th>Műveletek</th>
                             </tr>
                             </thead>
                             <tbody>
                             {serviceLengths.map(serviceLength => (
                                 <tr className="rows" key={serviceLength.serviceLengthId}>
-                                    <td>{serviceLength.serviceLengthId}</td>
-                                    <td>{serviceLength.serviceLength}</td>
+                                    <td>{serviceLength.serviceLength} perc</td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleDeleteServiceLength(serviceLength.serviceLengthId)}>
+                                            Törlés
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>

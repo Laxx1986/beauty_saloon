@@ -58,6 +58,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/bookings/*").permitAll()
                         .requestMatchers("/api/bookings/update/*").permitAll()
                         .requestMatchers("/api/serviceProviders/user/*").permitAll()
+                        .requestMatchers("/api/services/all-service-with-names").permitAll()
                         .requestMatchers("/api/users/update/*").permitAll()
                         .requestMatchers("/", "/index.html", "/Static/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/home", "/services", "/prices", "/about", "/contact").permitAll()

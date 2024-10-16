@@ -63,7 +63,9 @@ function BookingForm() {
         return Array.from(new Set(openingTimes
             .filter(ot => new Date(ot.date).getFullYear() === parseInt(year))
             .map(ot => new Date(ot.date).getMonth())
-        )).filter(month => parseInt(year) > currentYear || month >= currentMonth);
+        ))
+            .filter(month => parseInt(year) > currentYear || month >= currentMonth)
+            .sort((a, b) => a - b);  // Növekvő sorrendben rendezzük a hónapokat
     };
 
     const getDays = () => {
@@ -73,8 +75,10 @@ function BookingForm() {
                 return date.getFullYear() === parseInt(year) && date.getMonth() === parseInt(month) - 1;
             })
             .map(ot => new Date(ot.date).getDate())
-        ));
+        ))
+            .sort((a, b) => a - b);  // Növekvő sorrendben rendezzük a napokat
     };
+
 
     useEffect(() => {
         if (year && month && day) {
@@ -173,49 +177,53 @@ function BookingForm() {
             {feedback && <p>{feedback}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Service Provider:</label>
+                    <label>Szolgáltató: </label>
                     <select value={selectedServiceProvider} onChange={e => setSelectedServiceProvider(e.target.value)}>
-                        <option value="">Select service provider</option>
+                        <option value="">Válassz szolgáltatót</option>
                         {serviceProviders
-                            .filter(provider => loggedInServiceProviderId === '0d9b8997-21db-410a-ba83-02d132311073' || provider.serviceProviderId === loggedInServiceProviderId)
+                            .filter(provider =>
+                                provider.serviceProviderId !== '0d9b8997-21db-410a-ba83-02d132311073' &&
+                                (loggedInServiceProviderId === '0d9b8997-21db-410a-ba83-02d132311073' || provider.serviceProviderId === loggedInServiceProviderId)
+                            )
                             .map(provider => (
                                 <option key={provider.serviceProviderId} value={provider.serviceProviderId}>
                                     {provider.serviceProviderName}
                                 </option>
                             ))}
                     </select>
+
                 </div>
                 <div>
-                    <label>Service:</label>
+                    <label>Szolgáltatás: </label>
                     <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
-                        <option value="">Select service</option>
+                        <option value="">Válassz szolgáltatást</option>
                         {services.map(service => (
                             <option key={service.serviceId} value={service.serviceId}>{service.serviceName}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <label>Year:</label>
+                    <label>Év: </label>
                     <select value={year} onChange={e => setYear(e.target.value)}>
-                        <option value="">Select year</option>
+                    <option value="">Válaszd ki az évet</option>
                         {getYears().map(year => (
                             <option key={year} value={year}>{year}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <label>Month:</label>
+                    <label>Hónap: </label>
                     <select value={month} onChange={e => setMonth(e.target.value)}>
-                        <option value="">Select month</option>
+                        <option value="">Válaszd ki az hónapot</option>
                         {getMonths().map(month => (
                             <option key={month} value={month + 1}>{month + 1}</option>
                         ))}
                     </select>
                 </div>
                 <div>
-                    <label>Day:</label>
+                    <label>Nap: </label>
                     <select value={day} onChange={e => setDay(e.target.value)}>
-                        <option value="">Select day</option>
+                        <option value="">Válaszd ki az napot</option>
                         {getDays().map(day => (
                             <option key={day} value={day}>{day}</option>
                         ))}
@@ -229,7 +237,7 @@ function BookingForm() {
                     <label>Comment:</label>
                     <input type="text" value={comment} onChange={e => setComment(e.target.value)} />
                 </div>
-                <button type="submit">Book</button>
+                <button type="submit">Foglalás</button>
             </form>
 
             {selectedDayOpeningTime && (

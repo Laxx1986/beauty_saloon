@@ -15,22 +15,25 @@ function ServiceFilterPage() {
     const [serviceLengths, setServiceLengths] = useState([]);
     const [serviceProviders, setServiceProviders] = useState([]);
     const [editingService, setEditingService] = useState(null);
+    const [manualLength, setManualLength] = useState('');
+    const [selectionMode, setSelectionMode] = useState('list');
     const loggedInServiceProviderId = localStorage.getItem('serviceProviderId'); // Get logged-in service provider's ID
 
-    console.log(loggedInServiceProviderId);
     useEffect(() => {
         fetchServices();
 
         // Fetch service lengths and providers
         axiosInstance.get('/serviceLengths/getlengths')
-            .then(response => setServiceLengths(response.data))
+            .then(response => {
+                const sortedLengths = response.data.sort((a, b) => a.serviceLength - b.serviceLength); // Rendezés növekvő sorrendbe
+                setServiceLengths(sortedLengths);
+            })
             .catch(error => console.error('Error fetching service lengths:', error));
 
         axiosInstance.get('/serviceProviders/all-serviceprovider')
             .then(response => setServiceProviders(response.data))
             .catch(error => console.error('Error fetching service providers:', error));
     }, []);
-
     const fetchServices = () => {
         axiosInstance.get('/services/all-service-with-names-for-table')
             .then(response => {
@@ -87,16 +90,32 @@ function ServiceFilterPage() {
     const handleUpdateService = (e) => {
         e.preventDefault();
 
-        if (!editingService.servicePrice || !editingService.serviceLengthId) {
+        if (!editingService.servicePrice || (!editingService.serviceLengthId && !manualLength)) {
             setFeedback('Kérjük, töltsd ki az összes mezőt!');
             return;
         }
 
+        if (selectionMode === 'manual' && manualLength) {
+            axiosInstance.post('/serviceLengths/add', { serviceLength: manualLength })
+                .then(response => {
+                    editingService.serviceLengthId = response.data.serviceLengthId; // Ha új hossz, akkor hozzátároljuk
+                    updateServiceRequest();
+                })
+                .catch(error => {
+                    console.error('Hiba történt a szolgáltatás hossz hozzáadásakor:', error);
+                    setFeedback('Hiba történt a szolgáltatás hossz hozzáadásakor.');
+                });
+        } else {
+            updateServiceRequest(); // Ha a listából választott
+        }
+    };
+
+    const updateServiceRequest = () => {
         axiosInstance.put(`/services/update/${editingService.serviceId}`, editingService)
             .then(response => {
                 setFeedback('Szolgáltatás sikeresen módosítva.');
                 setEditingService(null);
-                fetchServices(); // Refresh the list
+                fetchServices();
             })
             .catch(error => {
                 console.error('Error updating service:', error);
@@ -153,22 +172,52 @@ function ServiceFilterPage() {
                                             </td>
                                             <td>
                                                 {editingService && editingService.serviceId === service.serviceId ? (
-                                                    <select
-                                                        value={editingService.serviceLengthId || ''} // Ensure the default value is an empty string
-                                                        onChange={(e) => setEditingService({
-                                                            ...editingService,
-                                                            serviceLengthId: e.target.value
-                                                        })}
-                                                    >
-                                                        <option value="">Kérjük, válassz</option>
-                                                        {/* Add the prompt option */}
-                                                        {serviceLengths.map(length => (
-                                                            <option key={length.serviceLengthId}
-                                                                    value={length.serviceLengthId}>
-                                                                {length.serviceLength} perc
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                    <>
+                                                        <div>
+                                                            <label>
+                                                                <input
+                                                                    type="radio"
+                                                                    value="list"
+                                                                    checked={selectionMode === 'list'}
+                                                                    onChange={() => setSelectionMode('list')}
+                                                                />
+                                                                Listából választok
+                                                            </label>
+                                                            <label>
+                                                                <input
+                                                                    type="radio"
+                                                                    value="manual"
+                                                                    checked={selectionMode === 'manual'}
+                                                                    onChange={() => setSelectionMode('manual')}
+                                                                />
+                                                                Kézzel adom meg
+                                                            </label>
+                                                        </div>
+                                                        {selectionMode === 'list' ? (
+                                                            <select
+                                                                value={editingService.serviceLengthId || ''}
+                                                                onChange={(e) => setEditingService({
+                                                                    ...editingService,
+                                                                    serviceLengthId: e.target.value
+                                                                })}
+                                                            >
+                                                                <option value="">Kérjük, válassz</option>
+                                                                {serviceLengths.map(length => (
+                                                                    <option key={length.serviceLengthId}
+                                                                            value={length.serviceLengthId}>
+                                                                        {length.serviceLength} perc
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        ) : (
+                                                            <input
+                                                                type="number"
+                                                                value={manualLength}
+                                                                onChange={(e) => setManualLength(e.target.value)}
+                                                                placeholder="Szolgáltatás hossz (perc)"
+                                                            />
+                                                        )}
+                                                    </>
                                                 ) : (
                                                     `${service.serviceLength} perc`
                                                 )}
@@ -179,17 +228,12 @@ function ServiceFilterPage() {
                                                         {editingService && editingService.serviceId === service.serviceId ? (
                                                             <>
                                                                 <button onClick={handleUpdateService}>Mentés</button>
-                                                                <button onClick={() => setEditingService(null)}>Mégsem
-                                                                </button>
+                                                                <button onClick={() => setEditingService(null)}>Mégsem</button>
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <button
-                                                                    onClick={() => setEditingService(service)}>Módosítás
-                                                                </button>
-                                                                <button
-                                                                    onClick={() => handleDeleteService(service.serviceId)}>Törlés
-                                                                </button>
+                                                                <button onClick={() => setEditingService(service)}>Módosítás</button>
+                                                                <button onClick={() => handleDeleteService(service.serviceId)}>Törlés</button>
                                                             </>
                                                         )}
                                                     </>
@@ -229,18 +273,47 @@ function ServiceFilterPage() {
                             </div>
                             <div>
                                 <label>Szolgáltatás hossz:</label>
-                                <select
-                                    value={newService.serviceLengthId || ''} // Ensure the default value is an empty string
-                                    onChange={(e) => setNewService({...newService, serviceLengthId: e.target.value})}
-                                    required
-                                >
-                                    <option value="">Kérjük, válassz</option>
-                                    {serviceLengths.map(length => (
-                                        <option key={length.serviceLengthId} value={length.serviceLengthId}>
-                                            {length.serviceLength} perc
-                                        </option>
-                                    ))}
-                                </select>
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="list"
+                                            checked={selectionMode === 'list'}
+                                            onChange={() => setSelectionMode('list')}
+                                        />
+                                        Listából választok
+                                    </label>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="manual"
+                                            checked={selectionMode === 'manual'}
+                                            onChange={() => setSelectionMode('manual')}
+                                        />
+                                        Kézzel adom meg
+                                    </label>
+                                </div>
+                                {selectionMode === 'list' ? (
+                                    <select
+                                        value={newService.serviceLengthId || ''}
+                                        onChange={(e) => setNewService({...newService, serviceLengthId: e.target.value})}
+                                        required
+                                    >
+                                        <option value="">Kérjük, válassz</option>
+                                        {serviceLengths.map(length => (
+                                            <option key={length.serviceLengthId} value={length.serviceLengthId}>
+                                                {length.serviceLength} perc
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    <input
+                                        type="number"
+                                        value={manualLength}
+                                        onChange={(e) => setManualLength(e.target.value)}
+                                        placeholder="Szolgáltatás hossz (perc)"
+                                    />
+                                )}
                             </div>
                             <div>
                                 <label>Szolgáltató:</label>

@@ -9,10 +9,7 @@
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.stereotype.Service;
 
-    import java.util.HashMap;
-    import java.util.List;
-    import java.util.Map;
-    import java.util.UUID;
+    import java.util.*;
     import java.util.stream.Collectors;
 
     @Service
@@ -81,14 +78,32 @@
             SaloonService existingService = serviceRepository.findById(serviceId)
                     .orElseThrow(() -> new RuntimeException("Service not found"));
 
-            ServiceLength serviceLength = serviceLengthRepository.findById(saloonServiceDTO.getServiceLengthId())
-                    .orElseThrow(() -> new RuntimeException("Service length not found"));
+            ServiceLength serviceLength;
+
+            // Ha a manuális szolgáltatási hossz nem 0, akkor azt használjuk
+            if (saloonServiceDTO.getServiceLengthId() == null && saloonServiceDTO.getManualServiceLength() > 0) {
+                Optional<ServiceLength> existingLength = serviceLengthRepository.findByServiceLength(saloonServiceDTO.getManualServiceLength());
+                if (existingLength.isPresent()) {
+                    serviceLength = existingLength.get(); // Ha már létezik, használjuk a meglévőt
+                } else {
+                    // Ha nem létezik, létrehozzuk és elmentjük az új szolgáltatási hossz értéket
+                    serviceLength = new ServiceLength();
+                    serviceLength.setServiceLength(saloonServiceDTO.getManualServiceLength());
+                    serviceLength = serviceLengthRepository.save(serviceLength); // Csak akkor mentjük, ha nem létezik
+                }
+            } else {
+                // Ha nincs manuális hossz megadva, akkor a kiválasztott serviceLengthId-t használjuk
+                serviceLength = serviceLengthRepository.findById(saloonServiceDTO.getServiceLengthId())
+                        .orElseThrow(() -> new RuntimeException("Service length not found"));
+            }
 
             existingService.setServicePrice(saloonServiceDTO.getServicePrice());
             existingService.setServiceLength(serviceLength);
 
             serviceRepository.save(existingService);
         }
+
+
 
         public void deleteService(UUID serviceId) {
             SaloonService existingService = serviceRepository.findById(serviceId)

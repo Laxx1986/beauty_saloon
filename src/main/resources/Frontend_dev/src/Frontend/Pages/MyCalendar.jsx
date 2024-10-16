@@ -107,7 +107,7 @@ function MyCalendar() {
 
     return (
         <div>
-            <button onClick={() => setShowBookingForm(!showBookingForm)}>New Booking</button>
+            <button onClick={() => setShowBookingForm(!showBookingForm)}>Új foglalás</button>
             {showBookingForm && <BookingForm />}
             <Calendar
                 localizer={localizer}

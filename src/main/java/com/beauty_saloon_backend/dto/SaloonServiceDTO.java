@@ -15,4 +15,5 @@ public class SaloonServiceDTO {
     private UUID serviceLengthId;
     private int servicePrice;
     private UUID serviceProviderId;
+    private int manualServiceLength;
 }
