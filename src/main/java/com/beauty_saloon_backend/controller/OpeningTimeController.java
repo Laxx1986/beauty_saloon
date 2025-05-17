@@ -39,7 +39,6 @@ public class OpeningTimeController {
         List<OpeningTimeDTO> openingTimes = openingTimeService.getOpeningTimesByServiceProvider(selectedServiceProvider);
         return ResponseEntity.ok(openingTimes);
     }
-
     @PostMapping("/create")
     public ResponseEntity<String> createOpeningTimes(@RequestBody OpeningTimeDTO openingTimeDTO) {
         List<LocalDate> selectedDates = openingTimeDTO.getSelectedDates(); // Use selectedDates from DTO

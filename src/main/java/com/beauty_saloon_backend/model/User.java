@@ -27,9 +27,6 @@ public class User implements UserDetails {
     )
     private UUID userId;
 
-    @Column(name = "public_key", columnDefinition = "TEXT")
-    private String publicKey;
-
     @Column(name = "username", nullable = false, unique = true)
     private String userName;
 

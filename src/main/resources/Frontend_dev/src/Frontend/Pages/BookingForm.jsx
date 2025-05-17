@@ -16,7 +16,7 @@ function BookingForm() {
     const [selectedDayOpeningTime, setSelectedDayOpeningTime] = useState(null);
     const [bookedTimes, setBookedTimes] = useState([]);
     const userId = localStorage.getItem('userId');
-    const loggedInServiceProviderId = localStorage.getItem('serviceProviderId'); // Get logged-in service provider's ID
+    const loggedInServiceProviderId = localStorage.getItem('serviceProviderId'); 
 
     useEffect(() => {
         axiosInstance.get('/serviceProviders/all-serviceprovider')
@@ -136,7 +136,6 @@ function BookingForm() {
         const openingEndTime = openingTimeForDay.timeTo ? openingTimeForDay.timeTo.substring(0, 5) : null;
 
         if (!openingStartTime || !openingEndTime) {
-            console.error('Hiba: openingStartTime vagy openingEndTime hiányzik:', openingTimeForDay);
             setFeedback('Hiba történt a nyitvatartási idő betöltésekor.');
             return;
         }

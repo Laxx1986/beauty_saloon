@@ -60,7 +60,6 @@ function MyCalendar() {
                         showAllDetails
                     };
                 });
-                console.log('Events:', bookings);
                 setEvents(bookings);
             })
             .catch(error => {

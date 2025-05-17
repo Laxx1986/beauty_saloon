@@ -142,7 +142,8 @@ public class BookingService {
 
             for (Booking existingBooking : existingBookings) {
                 LocalTime existingStartTime = existingBooking.getTime();
-                LocalTime existingEndTime = existingStartTime.plusMinutes(existingBooking.getSaloonService().getServiceLength().getServiceLength());
+                LocalTime existingEndTime = existingStartTime.plusMinutes(existingBooking.getSaloonService()
+                        .getServiceLength().getServiceLength());
 
                 // Ellenőrizzük, hogy az új foglalás kezdő és vég időpontja ne essen az már meglévő foglalás időtartományába
                 if (!(requestedEndTime.isBefore(existingStartTime) || requestedStartTime.isAfter(existingEndTime))) {
