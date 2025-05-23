@@ -62,6 +62,7 @@ function OpeningTimeFilterPage() {
     };
 
     const handleDeleteOpeningTime = (openingTimeId) => {
+        console.log(openingTimeId);
         axiosInstance
             .delete(`/openingTimes/delete/${openingTimeId}`)
             .then(() => {
@@ -146,17 +147,34 @@ function OpeningTimeFilterPage() {
     const handleAddOpeningTimes = (e) => {
         e.preventDefault();
 
-        if (!newOpeningTime.timeFrom || !newOpeningTime.timeTo || newOpeningTime.selectedDays.length === 0) {
+        const { timeFrom, timeTo, selectedDays, year, month } = newOpeningTime;
+
+        if (!timeFrom || !timeTo || selectedDays.length === 0) {
             setFeedback("Kérjük, töltsd ki az összes mezőt és válassz ki legalább egy napot.");
+            return;
+        }
+
+        // Csak az óra-perc mezők összehasonlítása
+        const [fromHours, fromMinutes] = timeFrom.split(":").map(Number);
+        const [toHours, toMinutes] = timeTo.split(":").map(Number);
+        const fromDate = new Date(0, 0, 0, fromHours, fromMinutes);
+        const toDate = new Date(0, 0, 0, toHours, toMinutes);
+
+        if (fromDate >= toDate) {
+            setFeedback("A kezdési időpont nem lehet későbbi vagy egyenlő a zárási időpontnál.");
             return;
         }
 
         const requestBody = {
             serviceProviderId: loggedInServiceProviderId,
-            timeFrom: newOpeningTime.timeFrom,
-            timeTo: newOpeningTime.timeTo,
-            selectedDates: newOpeningTime.selectedDays.map(day => {
-                return new Date(newOpeningTime.year, newOpeningTime.month, day).toISOString().split('T')[0];
+            timeFrom,
+            timeTo,
+            selectedDates: selectedDays.map(day => {
+                const localDate = new Date(year, month, day);
+                const formattedYear = localDate.getFullYear();
+                const formattedMonth = String(localDate.getMonth() + 1).padStart(2, '0');
+                const formattedDay = String(localDate.getDate()).padStart(2, '0');
+                return `${formattedYear}-${formattedMonth}-${formattedDay}`;
             })
         };
 

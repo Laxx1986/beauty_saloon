@@ -248,9 +248,21 @@ function BookingForm() {
                 <div>
                     <p>Foglalt időpontok:</p>
                     <ul>
-                        {bookedTimes.map((time, index) => (
-                            <li key={index}>{time}</li>
-                        ))}
+                        {bookedTimes.map((booking, index) => {
+                            const [hour, minute] = booking.time.split(':').map(Number);
+                            const start = new Date(0, 0, 0, hour, minute);
+                            const end = new Date(start.getTime() + (booking.serviceLength || 0) * 60000); // hossz percben
+
+                            const pad = (num) => String(num).padStart(2, '0');
+                            const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
+                            return (
+                                <li key={index}>
+                                    {formatTime(start)} - {formatTime(end)} ({booking.serviceName})
+                                </li>
+                            );
+                        })}
+
                     </ul>
                 </div>
             )}

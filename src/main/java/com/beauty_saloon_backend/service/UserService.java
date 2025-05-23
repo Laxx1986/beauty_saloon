@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.service;
 
+import com.beauty_saloon_backend.dto.UpdateUserDTO;
 import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.converter.UserConverter;
 import com.beauty_saloon_backend.exceptions.EmailAlreadyExistsException;
@@ -102,20 +103,21 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    public void updateUser(UUID userId, User updatedUser) {
-        User existingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    public void updateUser(UUID userId, UpdateUserDTO dto) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        existingUser.setName(dto.getName());
+        existingUser.setEmail(dto.getEmail());
+        existingUser.setPhoneNumber(dto.getPhoneNumber());
 
-        // Csak akkor frissítjük a jelszót, ha az meg van adva
-        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(dto.getPassword()));
         }
 
         userRepository.save(existingUser);
     }
+
     public Optional<User> getCurrentUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return Optional.ofNullable(userRepository.findByUserName(username));

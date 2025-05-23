@@ -7,6 +7,11 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
 
+// Egyedi esemény megjelenítő komponens
+const CustomEvent = ({ event }) => {
+    return <span>{event.title}</span>;
+};
+
 function MyCalendar() {
     const [events, setEvents] = useState([]);
     const [showBookingForm, setShowBookingForm] = useState(false);
@@ -14,7 +19,6 @@ function MyCalendar() {
     const [userRole, setUserRole] = useState('');
 
     useEffect(() => {
-        // Fetch the user's ID and role
         axiosInstance.get('/users/me')
             .then(response => {
                 setUserId(response.data.userId);
@@ -26,14 +30,24 @@ function MyCalendar() {
     }, []);
 
     useEffect(() => {
-        if (!userId || !userRole) return; // Wait until both userId and userRole are fetched
+        if (!userId || !userRole) return;
 
         axiosInstance.get('/bookings/all-booking')
             .then(response => {
                 const bookings = response.data.map(booking => {
-                    const { bookingId, date, time, comment, userId: bookingUserId, serviceProviderName, serviceName, serviceLength } = booking;
+                    const {
+                        bookingId,
+                        date,
+                        time,
+                        comment,
+                        userId: bookingUserId,
+                        serviceProviderName,
+                        serviceName,
+                        serviceLength
+                    } = booking;
+
                     const startDate = new Date(date);
-                    if (!isNaN(startDate.getTime()) && time) { // Check if startDate is a valid date and time is provided
+                    if (!isNaN(startDate.getTime()) && time) {
                         const [hours, minutes, seconds] = time.split(':');
                         startDate.setHours(hours || 0);
                         startDate.setMinutes(minutes || 0);
@@ -42,16 +56,18 @@ function MyCalendar() {
 
                     const endDate = new Date(startDate);
                     if (!isNaN(endDate.getTime())) {
-                        endDate.setMinutes(startDate.getMinutes() + (serviceLength || 0)); // Use default 0 if serviceLength is missing
+                        endDate.setMinutes(startDate.getMinutes() + (serviceLength || 0));
                     }
 
-                    // Check if the booking belongs to the logged-in user or if the user has the special ID
                     const isCurrentUserBooking = bookingUserId === userId;
                     const showAllDetails = userId === 'b0b58a07-c8df-452c-a215-cec93d404870';
 
                     return {
                         id: bookingId,
-                        title: showAllDetails || isCurrentUserBooking ? `${serviceProviderName} - ${serviceName} - ${comment}` : '',
+                        title:
+                            showAllDetails || isCurrentUserBooking
+                                ? `${serviceProviderName} - ${serviceName}${comment ? ' - ' + comment : ''}`
+                                : `${serviceProviderName}`,
                         start: startDate,
                         end: endDate,
                         serviceProviderName,
@@ -72,9 +88,8 @@ function MyCalendar() {
         let color = 'white';
 
         if (!event.showAllDetails && !event.isCurrentUserBooking) {
-            backgroundColor = 'gray'; // Use a default color for other users' bookings
+            backgroundColor = 'gray';
         } else {
-            // Customize color based on the service provider
             switch (event.serviceProviderName) {
                 case 'Mukormos':
                     backgroundColor = 'red';
@@ -97,9 +112,10 @@ function MyCalendar() {
         return {
             style: {
                 backgroundColor,
-                color: color,
+                color,
                 borderRadius: '2px',
-                border: '2px',
+                border: '1px solid #333',
+                padding: '2px'
             }
         };
     };
@@ -115,6 +131,7 @@ function MyCalendar() {
                 endAccessor="end"
                 style={{ height: 500 }}
                 eventPropGetter={eventStyleGetter}
+                components={{ event: CustomEvent }}
             />
         </div>
     );

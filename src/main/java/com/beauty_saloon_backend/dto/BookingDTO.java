@@ -32,5 +32,7 @@ public class BookingDTO {
     private String serviceName;
     private String name;
     private String serviceProviderName;
+    private Integer serviceLength;
+
 }
 

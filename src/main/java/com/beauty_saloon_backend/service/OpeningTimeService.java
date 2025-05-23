@@ -74,4 +74,12 @@ public class OpeningTimeService {
         // Save the opening time
         openingTimeRepository.save(openingTime);
     }
+
+    public boolean deleteById(UUID id) {
+        if (openingTimeRepository.existsById(id)) {
+            openingTimeRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }

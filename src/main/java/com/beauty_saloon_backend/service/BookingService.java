@@ -83,7 +83,8 @@ public class BookingService {
                                     false,
                                     booking.getSaloonService().getServiceName(),
                                     null,
-                                    serviceProviderName // Set the service provider's name
+                                    serviceProviderName,
+                                    booking.getSaloonService().getServiceLength().getServiceLength()// Set the service provider's name
                             );
                         } else {
                             // Return full details
@@ -98,7 +99,8 @@ public class BookingService {
                                     booking.isConfirmed(),
                                     booking.getSaloonService().getServiceName(),
                                     booking.getUser().getName(),
-                                    serviceProviderName // Set the service provider's name
+                                    serviceProviderName,
+                                    booking.getSaloonService().getServiceLength().getServiceLength()// Set the service provider's name
                             );
                         }
                     })

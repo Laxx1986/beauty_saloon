@@ -19,6 +19,11 @@ public class BookingConverter {
         dto.setConfirmed(booking.isConfirmed());
         dto.setName(booking.getUser().getName());
         dto.setServiceName(booking.getSaloonService().getServiceName());
+        if (booking.getSaloonService() != null && booking.getSaloonService().getServiceLength() != null) {
+            dto.setServiceLength(booking.getSaloonService().getServiceLength().getServiceLength());
+        } else {
+            dto.setServiceLength(0);
+        }
         return dto;
     }
 

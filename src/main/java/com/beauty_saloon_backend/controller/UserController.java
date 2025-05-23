@@ -1,5 +1,6 @@
 package com.beauty_saloon_backend.controller;
 
+import com.beauty_saloon_backend.dto.UpdateUserDTO;
 import com.beauty_saloon_backend.dto.UserDTO;
 import com.beauty_saloon_backend.exceptions.EmailAlreadyExistsException;
 import com.beauty_saloon_backend.exceptions.UsernameAlreadyExistsException;
@@ -84,9 +85,10 @@ public class UserController {
     }
 
     @PutMapping("/update/{userId}")
-    public void updateUser(@PathVariable UUID userId, @RequestBody User updatedUser) {
-        userService.updateUser(userId, updatedUser);
+    public void updateUser(@PathVariable UUID userId, @RequestBody UpdateUserDTO dto) {
+        userService.updateUser(userId, dto);
     }
+
 
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser() {

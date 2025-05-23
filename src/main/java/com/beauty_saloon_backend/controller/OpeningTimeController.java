@@ -54,5 +54,14 @@ public class OpeningTimeController {
         return ResponseEntity.ok("Opening times created successfully.");
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteOpeningTime(@PathVariable UUID id) {
+        boolean deleted = openingTimeService.deleteById(id);
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
