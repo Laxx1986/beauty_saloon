@@ -1,0 +1,22 @@
+A Projekt struktúráját nézve a mappa szerkezet úgy alakul, hogy:
+A beauty_saloon/src/main/com/beauty_saloon_backend mappában található maga a backend.
+
+Ez egy hagyományos mvc felépítésű project ahol a model az entitást, a converter a DTO converteket, a controller a végpontokat, a repository az adatbázis kezeléshez szükgéses fileokat a service pedig az üzleti logikát tartalmazza.
+
+A config mappában található a security és a cors config, míg a util mappában  jwt-hez szükséges util osztály található.
+
+A beauty_saloon/src/main/resources/Frontend_dev mappában pedig a Frontend található. Ezen az útvonalon található a frontend elindításához szükséges npm_start.bat file is. Ezzel elindítható a frontend
+
+Az src mappán belül található az app.jsx, ami a fő belépési pontja a frontendnek.
+A Frontend/Pages mappán belül pedig az egyes oldalak találhatók. 
+
+Az AdminFilters mappa tartalmazza magát az admin oldalt és ennek működéséhez szükséges kódot tartalmazó osztályokat.
+
+A Frontend elindítását fentebb leírtam.
+
+A backend-hez készítettem egy jar filet, amely ezen a linket található:
+https://drive.google.com/drive/folders/1HsTR0tPvvqD1Oauot_9sOkN0l8e9GEB_
+
+Ugyanaezen a linken található a bs.sql elnevezésű file, amely némi teszt adatot tartalmaz, amit a backendhez fel lehet tölteni.
+
+Az adatbázishoz szükséges minden konfigurációt az application.properties osztály tartalmaz.
